@@ -42,7 +42,6 @@ class DeepLinksManager {
 
     FirebaseDynamicLinks.instance.onLink.listen((PendingDynamicLinkData dynamicLinkData) {
       _deepLinks.add(dynamicLinkData);
-      throw Exception('coś poszło nie tak');
     }).onError((Object? error) {
       _errors.add(error.toString());
 
