@@ -188,13 +188,13 @@
       "languageVersion": "2.14"
     },
     {
-      "name": "flutter_shared",
+      "name": "itmesh_flutter_shared",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-03-30T08:53:16.594791Z",
+  "generated": "2023-03-30T13:57:08.833411Z",
   "generator": "pub",
   "generatorVersion": "2.19.1"
 }
