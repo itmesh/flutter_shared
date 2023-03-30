@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -44,6 +45,7 @@ class DeepLinksManager {
       _deepLinks.add(dynamicLinkData);
     }).onError((Object? error) {
       _errors.add(error.toString());
+      Fimber.d(error.toString());
 
       return;
     });
