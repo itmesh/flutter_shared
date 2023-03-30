@@ -51,7 +51,7 @@ class DeepLinksManager {
     });
   }
 
-  Future<void> openInitialLink() async {
+  Future<void> fetchInitialLink() async {
     //Get any initial links
     final PendingDynamicLinkData? initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
 
