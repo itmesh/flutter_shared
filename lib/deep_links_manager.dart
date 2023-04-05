@@ -55,6 +55,10 @@ class DeepLinksManager {
     //Get any initial links
     final PendingDynamicLinkData? initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
 
+    if (_deepLinks.value?.link == initialLink?.link) {
+      return;
+    }
+
     if (initialLink != null) {
       _deepLinks.add(initialLink);
     }
