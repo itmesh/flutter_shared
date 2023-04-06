@@ -26,6 +26,11 @@ class Debouncer<T> {
 
   T _state;
 
+  /// Disposes debouncer and cancels all pending changes.
+  void dispose() {
+    _timer?.cancel();
+  }
+
   /// Changes debouncer state (with debouncing).
   void changeState(T newState) async {
     final Timer? timer = _timer;
