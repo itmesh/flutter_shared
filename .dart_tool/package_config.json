@@ -81,25 +81,25 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///C:/Users/macie/fvm/default/packages/flutter",
+      "rootUri": "file:///C:/Users/macie/fvm/versions/stable/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///C:/Users/macie/fvm/default/packages/flutter_test",
+      "rootUri": "file:///C:/Users/macie/fvm/versions/stable/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///C:/Users/macie/fvm/default/packages/flutter_web_plugins",
+      "rootUri": "file:///C:/Users/macie/fvm/versions/stable/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "intl",
-      "rootUri": "file:///C:/Users/macie/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.0",
+      "rootUri": "file:///C:/Users/macie/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.17.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -147,7 +147,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///C:/Users/macie/fvm/default/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///C:/Users/macie/fvm/versions/stable/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -200,7 +200,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-04-06T14:30:23.073269Z",
+  "generated": "2023-04-07T09:46:08.171439Z",
   "generator": "pub",
   "generatorVersion": "2.19.3"
 }
