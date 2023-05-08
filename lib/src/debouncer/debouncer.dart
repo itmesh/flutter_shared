@@ -11,7 +11,7 @@ class Debouncer<T> {
   Debouncer.search({
     required this.action,
     required T initialState,
-  })  : duration = Duration(milliseconds: 350),
+  })  : duration = const Duration(milliseconds: 350),
         _state = initialState;
 
   /// Duration that has to pass after each [run] before [action] is called.
