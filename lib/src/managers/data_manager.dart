@@ -60,6 +60,11 @@ abstract class DataManager<T, P> {
     _data.add(currentValues);
   }
 
+  void clearData() {
+    final Map<String, T> clearData = <String, T>{};
+    _data.add(clearData);
+  }
+
   @protected
   Future<Map<String, T>> fetch(P params);
 }
