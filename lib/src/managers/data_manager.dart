@@ -24,6 +24,8 @@ abstract class DataManager<T, P> {
 
   T? lastKnownValueForId(String id) => _data.value[id];
 
+  Map<String, Duration> functionsWithFetchingTime = <String, Duration>{};
+
   Future<bool> fetchData(
     P params, {
     bool forceFetching = true,
@@ -36,6 +38,34 @@ abstract class DataManager<T, P> {
     } catch (e) {
       return false;
     }
+  }
+
+  DateTime? lastFetchingDate;
+
+  void setfunctionsWithFetchingTime(Map<String, Duration> givenFunctionsWithFetchingTime) {
+    functionsWithFetchingTime = givenFunctionsWithFetchingTime;
+  }
+
+  bool validateCacheTime(String functionName) {
+    if (functionsWithFetchingTime[functionName] == null) {
+      return true;
+    }
+
+    if (lastFetchingDate == null) {
+      lastFetchingDate = DateTime.now();
+      return true;
+    }
+
+    final Duration duration = functionsWithFetchingTime[functionName]!;
+
+    final DateTime now = DateTime.now();
+
+    if (now.difference(lastFetchingDate!) > duration) {
+      lastFetchingDate = DateTime.now();
+      return true;
+    }
+
+    return false;
   }
 
   /// deleteWhere is using to delete old values which doesn't exists.
