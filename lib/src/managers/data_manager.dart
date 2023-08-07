@@ -93,6 +93,7 @@ abstract class DataManager<T, P> {
   void clearData() {
     final Map<String, T> clearData = <String, T>{};
     _data.add(clearData);
+    lastFetchingDate = null;
   }
 
   @protected
