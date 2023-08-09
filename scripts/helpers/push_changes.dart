@@ -17,7 +17,10 @@ Future<void> pushChanges({
     ],
   );
 
-  final String ciRemote = result.stdout.toString();
+  String ciRemote = result.stdout.toString();
+  if (ciRemote.contains('https://github.com/')) {
+    ciRemote = ciRemote.replaceAll('https://github.com/', 'git@github.com:');
+  }
 
   if (ci) {
     final ProcessResult addRemoteResult = Process.runSync(
