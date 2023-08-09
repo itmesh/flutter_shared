@@ -1,5 +1,4 @@
 import 'package:chalkdart/chalk.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '_logger.dart';
 import 'logger_instance.dart';
@@ -12,14 +11,8 @@ class Logger {
   final String className;
   final LoggerInstance _loggerInstance = LoggerInstance();
 
-  final BehaviorSubject<UserError?> _userErrorState$ = BehaviorSubject<UserError?>.seeded(null);
-
   Stream<UserError?> get userErrorState {
-    return _userErrorState$;
-  }
-
-  Future<void> dispose() async {
-    await _userErrorState$.close();
+    return _loggerInstance.userErrorState;
   }
 
   void error(
@@ -32,16 +25,13 @@ class Logger {
       return;
     }
 
-    if (userError != null) {
-      _userErrorState$.add(userError);
-    }
-
     _loggerInstance.log(
       level: LoggerLevel.error,
       message: chalk.red.bold('🛑 $message'),
       tag: className,
       error: error,
       stackTrace: stackTrace,
+      userError: userError,
     );
   }
 

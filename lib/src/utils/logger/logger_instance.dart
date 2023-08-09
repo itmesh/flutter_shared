@@ -1,6 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:itmesh_flutter_shared/flutter_shared.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '_logger.dart';
@@ -13,6 +14,15 @@ class LoggerInstance {
   LoggerInstance._();
 
   static LoggerInstance? _instance;
+  final PublishSubject<UserError?> _userErrorState$ = PublishSubject<UserError?>();
+
+  Stream<UserError?> get userErrorState {
+    return _userErrorState$;
+  }
+
+  Future<void> dispose() async {
+    await _userErrorState$.close();
+  }
 
   static const String _logsKey = 'logger/logs';
   static const String _saveErrorAgreementKey = 'logger/save_error_agreement';
@@ -27,7 +37,12 @@ class LoggerInstance {
     required String message,
     required Object? error,
     required StackTrace? stackTrace,
+    UserError? userError,
   }) {
+    if (userError != null) {
+      _userErrorState$.add(userError);
+    }
+
     final String date = DateTime.now().readableTime;
     message = '$date [$tag] $message';
 
