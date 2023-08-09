@@ -15,7 +15,7 @@ class LoggerInstance {
   static LoggerInstance? _instance;
 
   static const String _logsKey = 'logger/logs';
-  static const String _crtashlyticsAgreementKey = 'logger/crashlytics_agreement';
+  static const String _saveErrorAgreementKey = 'logger/save_error_agreement';
   static const int _maxLogfileLines = 10000;
 
   @Deprecated('Use getSharedPreferences instead.')
@@ -31,7 +31,7 @@ class LoggerInstance {
     final String date = DateTime.now().readableTime;
     message = '$date [$tag] $message';
 
-    if (level == LoggerLevel.error && error != null) {
+    if (!kDebugMode && level == LoggerLevel.error && error != null) {
       _sendLogsToCrashlytics(message, error, stackTrace);
     }
 
@@ -61,8 +61,19 @@ class LoggerInstance {
     return _sharedPreferences ??= await SharedPreferences.getInstance();
   }
 
+  Future<void> setSaveErrorToFileAgreement(bool agreement) async {
+    final SharedPreferences sharedPreferences = await _getSharedPreferences();
+
+    await sharedPreferences.setBool(_saveErrorAgreementKey, agreement);
+  }
+
   Future<void> _saveLogToFile(String message) async {
     final SharedPreferences sharedPreferences = await _getSharedPreferences();
+
+    final bool? agreement = sharedPreferences.getBool(_saveErrorAgreementKey);
+    if (agreement != true) {
+      return;
+    }
 
     final List<String> rows = sharedPreferences.getStringList(_logsKey) ?? <String>[];
     rows.insert(0, message);
@@ -75,13 +86,6 @@ class LoggerInstance {
   }
 
   Future<void> _sendLogsToCrashlytics(String message, Object error, StackTrace? stackTrace) async {
-    final SharedPreferences sharedPreferences = await _getSharedPreferences();
-
-    final bool? agreement = sharedPreferences.getBool(_crtashlyticsAgreementKey);
-    if (agreement != true) {
-      return;
-    }
-
     if (kIsWeb) {
       return;
     }
