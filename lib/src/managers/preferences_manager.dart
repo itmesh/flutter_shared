@@ -50,4 +50,8 @@ class PreferencesManager {
   Future<bool> setStringList(String key, List<String> value) async {
     return await _sharedPreferences.setStringList(key, value);
   }
+
+  Future<bool> remove(String key) async {
+    return await _sharedPreferences.remove('$key');
+  }
 }

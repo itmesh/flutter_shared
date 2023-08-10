@@ -81,6 +81,10 @@ class Logger {
     await _loggerInstance.setSaveErrorToFileAgreement(agreement);
   }
 
+  Future<void> deleteLogs() async {
+    await _loggerInstance.deleteLogs();
+  }
+
   // Use this method to set the log level for the entire app.
   // Use it in the main.dart file.
   static void setLevel(LoggerLevel level) {

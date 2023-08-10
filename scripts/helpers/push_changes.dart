@@ -22,8 +22,6 @@ Future<void> pushChanges({
     ciRemote = ciRemote.replaceFirst('https://github.com/', 'git@github.com:').trim();
   }
 
-  print('ciRemote: $ciRemote');
-
   if (ci) {
     final ProcessResult addRemoteResult = Process.runSync(
       'git',
@@ -35,11 +33,7 @@ Future<void> pushChanges({
       ],
     );
 
-    print('addRemoteResult: ${addRemoteResult.stdout.toString()}');
-
     if (addRemoteResult.exitCode != 0) {
-      print('addRemoteResult: error');
-
       stderr.write(addRemoteResult.stderr);
       exit(1);
     }
@@ -53,10 +47,7 @@ Future<void> pushChanges({
       ],
     );
 
-    print('pushResult: ${pushResult.stdout.toString()}');
-
     if (pushResult.exitCode != 0) {
-      print('pushResult: error');
       stderr.write(pushResult.stderr);
       exit(1);
     }
@@ -71,10 +62,7 @@ Future<void> pushChanges({
       ],
     );
 
-    print('pushTagResult: ${pushTagResult.stdout.toString()}');
-
     if (pushTagResult.exitCode != 0) {
-      print('pushTagResult: error');
       stderr.write(pushTagResult.stderr);
       exit(1);
     }
@@ -92,10 +80,7 @@ Future<void> pushChanges({
     ],
   );
 
-  printStepHeader('pushResult: ${pushResult.stdout.toString()}');
-
   if (pushResult.exitCode != 0) {
-    printStepHeader('pushResult: error');
     stderr.write(pushResult.stderr);
     exit(1);
   }
@@ -110,11 +95,7 @@ Future<void> pushChanges({
     ],
   );
 
-  printStepHeader('pushTagResult: ${pushResult.stdout.toString()}');
-
-
   if (pushTagResult.exitCode != 0) {
-    printStepHeader('pushTagResult: error');
     stderr.write(pushTagResult.stderr);
     exit(1);
   }

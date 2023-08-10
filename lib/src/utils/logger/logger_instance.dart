@@ -71,6 +71,11 @@ class LoggerInstance {
     return rows.join('\n');
   }
 
+  Future<void> deleteLogs() async {
+    final SharedPreferences sharedPreferences = await _getSharedPreferences();
+    await sharedPreferences.remove(_logsKey);
+  }
+
   Future<SharedPreferences> _getSharedPreferences() async {
     // ignore: deprecated_member_use_from_same_package
     return _sharedPreferences ??= await SharedPreferences.getInstance();
