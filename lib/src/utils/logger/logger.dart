@@ -27,7 +27,7 @@ class Logger {
 
     _loggerInstance.log(
       level: LoggerLevel.error,
-      message: chalk.red.bold('🛑 $message'),
+      message: '🛑 $message',
       tag: className,
       error: error,
       stackTrace: stackTrace,
@@ -42,7 +42,7 @@ class Logger {
 
     _loggerInstance.log(
       level: LoggerLevel.warning,
-      message: chalk.yellow('⚠️ $message'),
+      message: '⚠️ $message',
       tag: className,
       error: null,
       stackTrace: null,
@@ -56,7 +56,7 @@ class Logger {
 
     _loggerInstance.log(
       level: LoggerLevel.info,
-      message: chalk.blue('ℹ️ $message'),
+      message: 'ℹ️ $message',
       tag: className,
       error: null,
       stackTrace: null,

@@ -1,3 +1,4 @@
+import 'package:chalkdart/chalk.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:itmesh_flutter_shared/flutter_shared.dart';
@@ -60,8 +61,19 @@ class LoggerInstance {
 
     _saveLogToFile(message);
 
-    // ignore: avoid_print
-    print(message);
+    switch (level) {
+      case LoggerLevel.error:
+        // ignore: avoid_print
+        print(chalk.red.bold(message));
+        break;
+      case LoggerLevel.warning:
+        // ignore: avoid_print
+        print(chalk.yellow(message));
+        break;
+      case LoggerLevel.info:
+        // ignore: avoid_print
+        print(chalk.blue(message));
+    }
   }
 
   Future<String> getSavedLogs() async {
