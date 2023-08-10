@@ -14,13 +14,6 @@ Future<void> main(List<String> arguments) async {
   await updateChangelog(version: version);
   await commitChanges();
 
-  await Process.run(
-    'git',
-    <String>[
-      'push',
-    ],
-  );
-
   final String tag = '${releaseOptions.prefix}$version';
 
   await createTag(

@@ -19,10 +19,10 @@ Future<void> pushChanges({
 
   String ciRemote = result.stdout.toString();
   if (ciRemote.contains('https://github.com/')) {
-    ciRemote = ciRemote.replaceAll('https://github.com/', 'git@github.com:');
+    ciRemote = ciRemote.replaceFirst('https://github.com/', 'git@github.com:').trim();
   }
 
-  printStepHeader('ciRemote: $ciRemote');
+  print('ciRemote: $ciRemote');
 
   if (ci) {
     final ProcessResult addRemoteResult = Process.runSync(
@@ -35,10 +35,10 @@ Future<void> pushChanges({
       ],
     );
 
-    printStepHeader('addRemoteResult: ${addRemoteResult.stdout.toString()}');
+    print('addRemoteResult: ${addRemoteResult.stdout.toString()}');
 
     if (addRemoteResult.exitCode != 0) {
-      printStepHeader('addRemoteResult: error');
+      print('addRemoteResult: error');
 
       stderr.write(addRemoteResult.stderr);
       exit(1);
@@ -50,14 +50,13 @@ Future<void> pushChanges({
         'push',
         '--set-upstream',
         'originSSH',
-        'HEAD',
       ],
     );
 
-    printStepHeader('pushResult: ${pushResult.stdout.toString()}');
+    print('pushResult: ${pushResult.stdout.toString()}');
 
     if (pushResult.exitCode != 0) {
-      printStepHeader('pushResult: error');
+      print('pushResult: error');
       stderr.write(pushResult.stderr);
       exit(1);
     }
@@ -72,10 +71,10 @@ Future<void> pushChanges({
       ],
     );
 
-    printStepHeader('pushTagResult: ${pushTagResult.stdout.toString()}');
+    print('pushTagResult: ${pushTagResult.stdout.toString()}');
 
     if (pushTagResult.exitCode != 0) {
-      printStepHeader('pushTagResult: error');
+      print('pushTagResult: error');
       stderr.write(pushTagResult.stderr);
       exit(1);
     }
