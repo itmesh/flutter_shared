@@ -47,6 +47,7 @@ Future<void> pushChanges({
         'push',
         '--set-upstream',
         'originSSH',
+        'HEAD'
       ],
     );
 
