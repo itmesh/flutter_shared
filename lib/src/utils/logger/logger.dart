@@ -77,6 +77,10 @@ class Logger {
     return _loggerInstance.getSavedLogs();
   }
 
+  Future<bool> getSaveErrorToFileAgreement() async {
+    return _loggerInstance.getSaveErrorToFileAgreement();
+  }
+
   Future<void> setSaveErrorToFileAgreement(bool agreement) async {
     await _loggerInstance.setSaveErrorToFileAgreement(agreement);
   }

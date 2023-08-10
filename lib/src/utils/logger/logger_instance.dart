@@ -71,6 +71,17 @@ class LoggerInstance {
     return rows.join('\n');
   }
 
+  Future<bool> getSaveErrorToFileAgreement() async {
+    final SharedPreferences sharedPreferences = await _getSharedPreferences();
+
+    final bool? agreement = sharedPreferences.getBool(_saveErrorAgreementKey);
+    if (agreement == true) {
+      return true;
+    }
+
+    return false;
+  }
+
   Future<void> deleteLogs() async {
     final SharedPreferences sharedPreferences = await _getSharedPreferences();
     await sharedPreferences.remove(_logsKey);
@@ -88,13 +99,12 @@ class LoggerInstance {
   }
 
   Future<void> _saveLogToFile(String message) async {
-    final SharedPreferences sharedPreferences = await _getSharedPreferences();
-
-    final bool? agreement = sharedPreferences.getBool(_saveErrorAgreementKey);
-    if (agreement != true) {
+    final bool agreement = await getSaveErrorToFileAgreement();
+    if (!agreement) {
       return;
     }
 
+    final SharedPreferences sharedPreferences = await _getSharedPreferences();
     final List<String> rows = sharedPreferences.getStringList(_logsKey) ?? <String>[];
     rows.insert(0, message);
 
