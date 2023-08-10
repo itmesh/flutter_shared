@@ -18,8 +18,11 @@ Future<void> pushChanges({
   );
 
   String ciRemote = result.stdout.toString();
+  print('ciRemote: $ciRemote');
   if (ciRemote.contains('https://github.com/')) {
     ciRemote = ciRemote.replaceFirst('https://github.com/', 'git@github.com:').trim();
+  } else if (ciRemote.contains('https://itmesh@github.com/')) {
+    ciRemote = ciRemote.replaceFirst('https://itmesh@github.com/', 'git@github.com:').trim();
   }
 
   print('ciRemote: $ciRemote');

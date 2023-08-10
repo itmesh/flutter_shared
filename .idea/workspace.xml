@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c45590b9-e424-416b-aab7-61e926880e02" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/create_new_build_number.dart" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/create_new_build_number.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/helpers/push_changes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/helpers/push_changes.dart" afterDir="false" />
-    </list>
+    <list default="true" id="c45590b9-e424-416b-aab7-61e926880e02" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
