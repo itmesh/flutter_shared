@@ -26,6 +26,13 @@ class ImAudioInput extends StatefulWidget {
     this.labelStyle,
     this.errorStyle,
     this.infoStyle,
+    this.baseBarColor,
+    this.bufferedBarColor,
+    this.progressBarColor,
+    this.playerColor,
+    this.timeLabelTextStyleIfExpanded,
+    this.titleStyle,
+    this.positionTextStyle,
   });
 
   final AudioInputData? initAudioInputData;
@@ -46,6 +53,13 @@ class ImAudioInput extends StatefulWidget {
   final TextStyle? labelStyle;
   final TextStyle? errorStyle;
   final TextStyle? infoStyle;
+  final Color? baseBarColor;
+  final Color? bufferedBarColor;
+  final Color? progressBarColor;
+  final Color? playerColor;
+  final TextStyle? timeLabelTextStyleIfExpanded;
+  final TextStyle? titleStyle;
+  final TextStyle? positionTextStyle;
 
   @override
   State<ImAudioInput> createState() => ImAudioInputState();
@@ -161,6 +175,13 @@ class ImAudioInputState extends State<ImAudioInput> {
           forward15SecondsIcon: widget.forward15SecondsIcon,
           closeIcon: widget.closeIcon,
           circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
+          baseBarColor: widget.baseBarColor,
+          bufferedBarColor: widget.bufferedBarColor,
+          progressBarColor: widget.progressBarColor,
+          playerColor: widget.playerColor,
+          timeLabelTextStyleIfExpanded: widget.timeLabelTextStyleIfExpanded,
+          titleStyle: widget.titleStyle,
+          positionTextStyle: widget.positionTextStyle,
         );
       } else {
         return const SizedBox();
