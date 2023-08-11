@@ -14,7 +14,6 @@ class ImDropdownInput<T> extends StatefulWidget {
     this.onChanged,
     this.customSorting,
     this.validator,
-    this.tooltipMsg,
     this.isRequired = false,
     this.enabled = true,
     this.translateItemtoString,
@@ -32,7 +31,6 @@ class ImDropdownInput<T> extends StatefulWidget {
   final void Function(T? value)? onChanged;
   final String Function(T? element)? translateItemtoString;
   final void Function(List<T> elements)? customSorting;
-  final String? tooltipMsg;
   final Set<T> values;
   final String label;
   final T? initialValue;
@@ -103,20 +101,7 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: _buildcontent(field),
-                  ),
-                  if (widget.tooltipMsg != null)
-                    Row(
-                      children: <Widget>[
-                        const SizedBox(width: 12.0),
-                        Text(widget.tooltipMsg!),
-                      ],
-                    ),
-                ],
-              ),
+              child: _buildcontent(field),
             ),
             _buildErrorLine(field),
           ],
