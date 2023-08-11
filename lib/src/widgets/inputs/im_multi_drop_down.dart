@@ -12,7 +12,6 @@ class ImMultiDropdown<T> extends StatefulWidget {
     required this.initialItems,
     this.onChanged,
     this.customSorting,
-    this.tooltipMsg,
     this.translateItemtoString,
     this.errorStyle,
     this.textStyle,
@@ -28,7 +27,6 @@ class ImMultiDropdown<T> extends StatefulWidget {
   final void Function(Set<T>? value)? onChanged;
   final String Function(T element)? translateItemtoString;
   final void Function(List<T> elements)? customSorting;
-  final String? tooltipMsg;
   final Set<T> items;
   final String label;
   final Set<T> initialItems;
