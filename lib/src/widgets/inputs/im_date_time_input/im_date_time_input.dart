@@ -20,7 +20,6 @@ class ImDateTimeInput extends StatelessWidget {
     this.lastDate,
     this.validator,
     this.selectableDayPredicate,
-    this.tooltipMsg,
     this.errorStyle,
     this.errorBorder,
     this.focusedErrorBorder,
@@ -34,7 +33,8 @@ class ImDateTimeInput extends StatelessWidget {
     this.focusColor,
     this.fillColor,
     this.borderColor,
-    this.textColor,
+    this.timeTextColor,
+    this.dateTextColor,
     this.labelSmallStyle,
     this.fontSize = 16.0,
   });
@@ -56,7 +56,6 @@ class ImDateTimeInput extends StatelessWidget {
   final bool endOfDay;
   final String? Function(DateTimeInputData?)? validator;
   final bool Function(DateTime)? selectableDayPredicate;
-  final String? tooltipMsg;
   final double fontSize;
   final TextStyle? errorStyle;
   final TextStyle? labelStyle;
@@ -71,7 +70,8 @@ class ImDateTimeInput extends StatelessWidget {
   final Color? focusColor;
   final Color? fillColor;
   final Color? borderColor;
-  final Color? textColor;
+  final Color? timeTextColor;
+  final Color? dateTextColor;
   final TextStyle? labelSmallStyle;
   final double finalHeight;
   final EdgeInsets contentPadding;
@@ -171,6 +171,7 @@ class ImDateTimeInput extends StatelessWidget {
             final TimeOfDay initialTimeOfDay = formFieldKeyTime ?? TimeOfDay.now();
             FocusNodeUtil.clearFocus(context);
             final TimeOfDay? result = await showTimePicker(
+              
               routeSettings: const RouteSettings(name: '/time-picker'),
               builder: (BuildContext context, Widget? child) {
                 return MediaQuery(
@@ -184,7 +185,7 @@ class ImDateTimeInput extends StatelessWidget {
                         // change the border color
                         primary: borderColor ?? const Color(0xff6200ee),
                         // change the text color
-                        onSurface: textColor ?? Colors.black,
+                        onSurface: timeTextColor ?? Colors.black,
                       ),
                     ),
                     child: child ?? const SizedBox(),
@@ -239,6 +240,7 @@ class ImDateTimeInput extends StatelessWidget {
           final DateTime initialDateTime = formFieldKeyDate ?? DateTime.now();
           FocusNodeUtil.clearFocus(context);
           final DateTime? result = await showDatePicker(
+            locale: Locale.fromSubtags(languageCode: 'pl'),
             routeSettings: const RouteSettings(name: '/date-picker'),
             builder: (BuildContext context, Widget? child) {
               return Theme(
@@ -250,7 +252,7 @@ class ImDateTimeInput extends StatelessWidget {
                     // change the border color
                     primary: borderColor ?? const Color(0xff6200ee),
                     // change the text color
-                    onSurface: textColor ?? Colors.black,
+                    onSurface: dateTextColor ?? Colors.black,
                   ),
                 ),
                 child: child ?? const SizedBox(),
