@@ -9,7 +9,6 @@ class PreferencesManager {
 
   final SharedPreferences _sharedPreferences;
 
-  // ignore: unused_element
   Future<Map<dynamic, dynamic>> getMap(String key) async {
     final String? encodedMap = _sharedPreferences.getString(key);
 
@@ -20,7 +19,6 @@ class PreferencesManager {
     return json.decode(encodedMap);
   }
 
-  // ignore: unused_element
   Future<bool> setMap(String key, Map<dynamic, dynamic> map) async {
     final String encodedMap = json.encode(map);
 
@@ -51,7 +49,15 @@ class PreferencesManager {
     return await _sharedPreferences.setStringList(key, value);
   }
 
+  Future<bool?> getBool(String key) async {
+    return await _sharedPreferences.getBool(key);
+  }
+
+  Future<bool> setBool(String key, bool value) async {
+    return await _sharedPreferences.setBool(key, value);
+  }
+
   Future<bool> remove(String key) async {
-    return await _sharedPreferences.remove('$key');
+    return await _sharedPreferences.remove(key);
   }
 }
