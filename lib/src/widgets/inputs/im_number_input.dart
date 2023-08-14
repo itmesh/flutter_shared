@@ -21,10 +21,8 @@ class ImNumberInput extends StatefulWidget {
     this.onSubmit,
     this.suffixText,
     this.showDeleteIcon = true,
-    this.tooltipMsg,
-    this.suffixBoxColor,
     this.suffixTextStyle,
-    this.suffixBoxBorder,
+    this.suffixBoxDecoration,
     this.border,
     this.focusedBorder,
     this.enabledBorder,
@@ -56,8 +54,6 @@ class ImNumberInput extends StatefulWidget {
   final String? suffixText;
   final bool showDeleteIcon;
   final Widget? deleteIcon;
-  final String? tooltipMsg;
-  final Color? suffixBoxColor;
   final Color? focusColor;
   final TextStyle? suffixTextStyle;
   final TextStyle? hintStyle;
@@ -65,7 +61,7 @@ class ImNumberInput extends StatefulWidget {
   final TextStyle? floatingLabelStyle;
   final TextStyle? errorStyle;
   final TextStyle? textStyle;
-  final BoxBorder? suffixBoxBorder;
+  final BoxDecoration? suffixBoxDecoration;
   final InputBorder? border;
   final InputBorder? focusedBorder;
   final InputBorder? enabledBorder;
@@ -97,14 +93,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
             children: <Widget>[
               Container(
                 height: widget.inputHeight,
-                decoration: BoxDecoration(
-                  color: widget.suffixBoxColor,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(6.0),
-                    bottomRight: Radius.circular(6.0),
-                  ),
-                  border: widget.suffixBoxBorder,
-                ),
+                decoration: widget.suffixBoxDecoration,
                 child: Align(
                   alignment: Alignment.center,
                   child: Padding(
@@ -157,7 +146,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           key: widget.formFieldKey,
           obscureText: widget.obscureText,
           decoration: InputDecoration(
-            contentPadding:widget.contentPadding,
+            contentPadding: widget.contentPadding,
             errorStyle: widget.errorStyle,
             focusColor: widget.focusColor,
             errorBorder: widget.errorBorder,
