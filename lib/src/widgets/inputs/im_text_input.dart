@@ -23,7 +23,6 @@ class ImTextInput extends StatefulWidget {
     this.autofillHints,
     this.withoutSpaces = false,
     this.suffixText,
-    this.borderColor,
     this.textStyle,
     this.errorStyle,
     this.focusColor,
@@ -55,7 +54,6 @@ class ImTextInput extends StatefulWidget {
   final List<String>? autofillHints;
   final bool withoutSpaces;
   final String? suffixText;
-  final Color? borderColor;
   final Color? focusColor;
   final Color? fillColor;
   final TextStyle? textStyle;
