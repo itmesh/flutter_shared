@@ -244,7 +244,7 @@ class ImDateTimeInput extends StatelessWidget {
           final DateTime initialDateTime = formFieldKeyDate ?? DateTime.now();
           FocusNodeUtil.clearFocus(context);
           final DateTime? result = await showDatePicker(
-            locale: Locale.fromSubtags(languageCode: 'pl'),
+            locale: Locale.fromSubtags(languageCode: languageCode),
             routeSettings: const RouteSettings(name: '/date-picker'),
             builder: (BuildContext context, Widget? child) {
               return Theme(
@@ -315,7 +315,7 @@ class ImDateTimeInput extends StatelessWidget {
   }
 
   String _getInitialDateText(FormFieldState<DateTimeInputData> field) {
-    final String? value = field.value?.date?.toDateString('pl');
+    final String? value = field.value?.date?.toDateString(languageCode);
     if (value != null) {
       return value;
     }
