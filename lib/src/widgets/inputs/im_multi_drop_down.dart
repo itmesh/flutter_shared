@@ -141,11 +141,11 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
                                       ),
                                       onDeleted: () {
                                         _selectedItems.remove(e);
-            
+
                                         if (widget.onChanged != null) {
                                           widget.onChanged!(value);
                                         }
-            
+
                                         setState(() {});
                                       },
                                     ),
@@ -161,7 +161,11 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
             const SizedBox(
               width: 8.0,
             ),
-            if (widget.expandDropdownIcon != null) widget.expandDropdownIcon!,
+            if (widget.expandDropdownIcon != null)
+              Padding(
+                padding: EdgeInsets.only(right: widget.contentPadding.right),
+                child: widget.expandDropdownIcon!,
+              ),
           ],
         ),
       ),
