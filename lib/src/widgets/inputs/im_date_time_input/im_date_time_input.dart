@@ -81,8 +81,6 @@ class ImDateTimeInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.setLocale(Locale.fromSubtags(languageCode: languageCode));
-
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: SizedBox(
@@ -259,7 +257,11 @@ class ImDateTimeInput extends StatelessWidget {
                     onSurface: dateTextColor ?? Colors.black,
                   ),
                 ),
-                child: child ?? const SizedBox(),
+                child: Localizations.override(
+                  context: context,
+                  locale: Locale(languageCode),
+                  child: child ?? const SizedBox(),
+                ),
               );
             },
             context: context,
@@ -324,6 +326,8 @@ class ImDateTimeInput extends StatelessWidget {
   }
 
   String _getInitialTimeText(FormFieldState<DateTimeInputData> field, BuildContext context) {
+    context.setLocale(Locale.fromSubtags(languageCode: languageCode));
+
     final String? value = field.value?.time?.format(context);
     if (value != null) {
       return value;
