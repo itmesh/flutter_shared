@@ -5,6 +5,8 @@ class ImDateTimeInput extends StatelessWidget {
   const ImDateTimeInput({
     super.key,
     required this.formFieldKey,
+    required this.contentPadding,
+    required this.finalHeight,
     this.labelText = 'Date',
     this.labelTimeText = 'Hour',
     this.endOfDay = false,
@@ -71,13 +73,15 @@ class ImDateTimeInput extends StatelessWidget {
   final Color? borderColor;
   final Color? textColor;
   final TextStyle? labelSmallStyle;
+  final double finalHeight;
+  final EdgeInsets contentPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: SizedBox(
-        height: 70.0,
+        height: finalHeight,
         child: FormField<DateTimeInputData>(
           initialValue: _getInitialValue(),
           key: formFieldKey,
@@ -173,7 +177,7 @@ class ImDateTimeInput extends StatelessWidget {
                   data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
                   child: Theme(
                     data: ThemeData.light().copyWith(
-                      textTheme:  TextTheme(
+                      textTheme: TextTheme(
                         labelSmall: labelSmallStyle,
                       ),
                       colorScheme: ColorScheme.light(
@@ -199,18 +203,13 @@ class ImDateTimeInput extends StatelessWidget {
               style: textStyle,
               controller: TextEditingController()..text = _getInitialTimeText(field, context),
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(
-                  top: 10.0,
-                  bottom: 16.0,
-                  left: 12.0,
-                  right: 12.0,
-                ),
+                contentPadding: contentPadding,
                 errorStyle: errorStyle,
                 focusColor: focusColor,
                 errorBorder: errorBorder,
                 focusedErrorBorder: focusedErrorBorder,
                 filled: true,
-                fillColor:fillColor,
+                fillColor: fillColor,
                 alignLabelWithHint: false,
                 hintStyle: hintStyle,
                 labelStyle: labelStyle,
@@ -270,12 +269,7 @@ class ImDateTimeInput extends StatelessWidget {
             style: textStyle,
             controller: TextEditingController()..text = _getInitialDateText(field),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(
-                top: 10.0,
-                bottom: 16.0,
-                left: 12.0,
-                right: 12.0,
-              ),
+              contentPadding: contentPadding,
               errorStyle: errorStyle,
               focusColor: focusColor,
               errorBorder: errorBorder,

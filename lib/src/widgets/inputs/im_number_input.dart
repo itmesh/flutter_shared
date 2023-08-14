@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class ImNumberInput extends StatefulWidget {
   const ImNumberInput({
     super.key,
+    required this.finalHeight,
+    required this.inputHeight,
+    required this.contentPadding,
     this.labelText,
     this.formFieldKey,
     this.onChanged,
@@ -69,7 +72,9 @@ class ImNumberInput extends StatefulWidget {
   final InputBorder? errorBorder;
   final InputBorder? focusedErrorBorder;
   final Color? fillColor;
-
+  final double inputHeight;
+  final double finalHeight;
+  final EdgeInsets contentPadding;
   @override
   State<ImNumberInput> createState() => _ImNumberInputState();
 }
@@ -91,7 +96,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           Column(
             children: <Widget>[
               Container(
-                height: 48.0,
+                height: widget.inputHeight,
                 decoration: BoxDecoration(
                   color: widget.suffixBoxColor,
                   borderRadius: const BorderRadius.only(
@@ -121,7 +126,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
   Widget _buiBhFormField() {
     return Expanded(
       child: SizedBox(
-        height: 72.0,
+        height: widget.finalHeight,
         child: TextFormField(
           style: widget.textStyle,
           keyboardType: TextInputType.number,
@@ -152,12 +157,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           key: widget.formFieldKey,
           obscureText: widget.obscureText,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.only(
-              top: 10.0,
-              bottom: 16.0,
-              left: 12.0,
-              right: 12.0,
-            ),
+            contentPadding:widget.contentPadding,
             errorStyle: widget.errorStyle,
             focusColor: widget.focusColor,
             errorBorder: widget.errorBorder,

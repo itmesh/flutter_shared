@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 class ImTextInput extends StatefulWidget {
   const ImTextInput({
     super.key,
+    required this.contentPadding,
+    required this.finalHeight,
     this.labelText,
     this.hintText,
     this.formFieldKey,
@@ -34,7 +36,6 @@ class ImTextInput extends StatefulWidget {
     this.enabledBorder,
     this.focusedBorder,
     this.border,
-
   });
 
   final String? labelText;
@@ -67,6 +68,8 @@ class ImTextInput extends StatefulWidget {
   final TextStyle? hintStyle;
   final TextStyle? labelStyle;
   final TextStyle? floatingLabelStyle;
+  final double finalHeight;
+  final EdgeInsets contentPadding;
 
   @override
   State<ImTextInput> createState() => _ImTextInputState();
@@ -83,7 +86,7 @@ class _ImTextInputState extends State<ImTextInput> {
 
   Widget _buildContent() {
     return SizedBox(
-      height: 70.0,
+      height: widget.finalHeight,
       child: TextFormField(
         style: widget.textStyle,
         autofillHints: widget.autofillHints,
@@ -116,12 +119,7 @@ class _ImTextInputState extends State<ImTextInput> {
               ]
             : null,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(
-            top: 16.0,
-            bottom: 16.0,
-            left: 16.0,
-            right: 16.0,
-          ),
+          contentPadding: widget.contentPadding,
           errorStyle: widget.errorStyle,
           suffixText: widget.suffixText,
           hintText: widget.hintText,

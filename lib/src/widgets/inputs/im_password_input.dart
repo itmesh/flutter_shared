@@ -5,6 +5,8 @@ class ImPasswordInput extends StatefulWidget {
     super.key,
     required this.passwordNotVisibleIcon,
     required this.passwordVisibleIcon,
+    required this.finalHeight,
+    required this.contentPadding,
     this.labelText,
     this.hintText,
     this.formFieldKey,
@@ -55,6 +57,8 @@ class ImPasswordInput extends StatefulWidget {
   final Color? fillColor;
   final Widget passwordNotVisibleIcon;
   final Widget passwordVisibleIcon;
+  final double finalHeight;
+  final EdgeInsets contentPadding;
 
   @override
   State<ImPasswordInput> createState() => _ImPasswordInputState();
@@ -68,7 +72,7 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: SizedBox(
-        height: 70.0,
+        height: widget.finalHeight,
         child: TextFormField(
           style: widget.textStyle,
           autofillHints: widget.autofillHints,
@@ -93,7 +97,7 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
           key: widget.formFieldKey,
           obscureText: _passwordNotVisible,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(16.0),
+            contentPadding:widget.contentPadding,
             errorStyle: widget.errorStyle,
             hintText: widget.hintText,
             focusColor: widget.focusColor,

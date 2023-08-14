@@ -9,6 +9,9 @@ class ImDropdownInput<T> extends StatefulWidget {
     required this.values,
     required this.label,
     required this.labelStyle,
+    required this.inputHeight,
+    required this.finalHeight,
+    required this.contentPadding,
     this.formFieldKey,
     this.initialValue,
     this.onChanged,
@@ -48,6 +51,9 @@ class ImDropdownInput<T> extends StatefulWidget {
   final Color? dropdownColor;
   final Decoration? dropdownDecoration;
   final Widget? expandDropdownIcon;
+  final double inputHeight;
+  final double finalHeight;
+  final EdgeInsets contentPadding;
 
   @override
   State<ImDropdownInput<T>> createState() => ImDropdownInputState<T>();
@@ -79,7 +85,7 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 76.0,
+      height: widget.finalHeight,
       child: FormField<T>(
         enabled: widget.enabled,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -166,17 +172,12 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
 
   Widget _buildDropDown(FormFieldState<T> field) {
     return Container(
-      height: 48.0,
+      height: widget.inputHeight,
       decoration: widget.dropdownDecoration,
       child: CompositedTransformTarget(
         link: this._layerLink,
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 4.0,
-            bottom: 4.0,
-            left: 12.0,
-            right: 12.0,
-          ),
+          padding: widget.contentPadding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

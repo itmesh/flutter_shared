@@ -10,16 +10,18 @@ class ImMultiDropdown<T> extends StatefulWidget {
     required this.label,
     required this.labelStyle,
     required this.initialItems,
+    required this.inputHeight,
+    required this.contentPadding,
     this.onChanged,
     this.customSorting,
     this.translateItemtoString,
-    this.errorStyle,
     this.textStyle,
     this.titleStyle,
     this.subtitleStyle,
     this.backgroundColor,
     this.dropdownColor,
     this.chipsColor,
+    this.checkOnListColor,
     this.dropdownDecoration,
     this.expandDropdownIcon,
   }) : super(key: key);
@@ -30,7 +32,6 @@ class ImMultiDropdown<T> extends StatefulWidget {
   final Set<T> items;
   final String label;
   final Set<T> initialItems;
-  final TextStyle? errorStyle;
   final TextStyle? textStyle;
   final TextStyle? titleStyle;
   final TextStyle? subtitleStyle;
@@ -38,8 +39,11 @@ class ImMultiDropdown<T> extends StatefulWidget {
   final Color? backgroundColor;
   final Color? chipsColor;
   final Color? dropdownColor;
+  final Color? checkOnListColor;
   final Decoration? dropdownDecoration;
   final Widget? expandDropdownIcon;
+  final double inputHeight;
+  final EdgeInsets contentPadding;
 
   @override
   State<ImMultiDropdown<T>> createState() => ImMultiDropdownState<T>();
@@ -109,16 +113,12 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
 
   Widget _buildDropDown() {
     return Container(
-      height: 48.0,
+      height: widget.inputHeight,
       decoration: widget.dropdownDecoration,
       child: CompositedTransformTarget(
         link: this._layerLink,
         child: Padding(
-          padding: const EdgeInsets.only(
-            bottom: 4.0,
-            left: 12.0,
-            right: 12.0,
-          ),
+          padding: widget.contentPadding,
           child: Row(
             children: <Widget>[
               Expanded(
@@ -214,7 +214,7 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
                                     _overlayEntry.markNeedsBuild();
                                     setState(() {});
                                   },
-                                  activeColor: const Color(0xffDCDEF7),
+                                  activeColor: widget.checkOnListColor,
                                 ))
                             .toList(),
                       ),
