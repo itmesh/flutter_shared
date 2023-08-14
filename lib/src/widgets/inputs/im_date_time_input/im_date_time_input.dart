@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:itmesh_flutter_shared/flutter_shared.dart';
 
 class ImDateTimeInput extends StatelessWidget {
@@ -331,12 +330,15 @@ class ImDateTimeInput extends StatelessWidget {
   }
 
   String _getInitialTimeText(FormFieldState<DateTimeInputData> field, BuildContext context) {
-    context.setLocale(Locale.fromSubtags(languageCode: languageCode));
-    Get.updateLocale(Locale.fromSubtags(languageCode: languageCode));
-    
-    final String? value = field.value?.time?.format(context);
+
+    final TimeOfDay? value = field.value?.time;
     if (value != null) {
-      return value;
+      context.setLocale(Locale.fromSubtags(languageCode: languageCode));
+
+      final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+      final String formattedTimeOfDay = localizations.formatTimeOfDay(value);
+
+      return formattedTimeOfDay;
     }
 
     return '';
