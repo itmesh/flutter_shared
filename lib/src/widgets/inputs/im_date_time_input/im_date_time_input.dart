@@ -243,6 +243,9 @@ class ImDateTimeInput extends StatelessWidget {
             builder: (BuildContext context, Widget? child) {
               return Theme(
                 data: ThemeData.light().copyWith(
+                  textTheme: TextTheme(
+                    labelSmall: labelSmallStyle,
+                  ),
                   colorScheme: ColorScheme.light(
                     // change the border color
                     primary: borderColor ?? const Color(0xff6200ee),
