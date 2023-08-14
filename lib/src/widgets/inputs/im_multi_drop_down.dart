@@ -79,7 +79,7 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
     return Stack(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 9.0),
           child: GestureDetector(
             key: _globalKey,
             onTap: () => _toggleDropdown(_globalKey.currentContext ?? context),
@@ -87,7 +87,7 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 7.5, left: 8.0),
+          padding: const EdgeInsets.only(top: 8.5, left: 8.0),
           child: Container(
             color: widget.backgroundColor,
             child: Padding(
@@ -100,7 +100,10 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 8.0),
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            top: 2.0,
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Text(

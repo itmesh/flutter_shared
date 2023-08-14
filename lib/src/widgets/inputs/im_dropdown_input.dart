@@ -129,14 +129,18 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
       );
     }
 
-    return const SizedBox(height: 16.0);
+    if (widget.errorStyle?.fontSize == null) {
+      return const SizedBox(height: 14.0);
+    }
+
+    return SizedBox(height: widget.errorStyle!.fontSize! + 1.0);
   }
 
   Widget _buildcontent(FormFieldState<T> field) {
     return Stack(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 9.0),
           child: GestureDetector(
             key: _globalKey,
             onTap: () => widget.enabled ? _toggleDropdown(_globalKey.currentContext ?? context, field) : null,
@@ -144,7 +148,7 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 7.5, left: 8.0),
+          padding: const EdgeInsets.only(top: 8.5, left: 8.0),
           child: Container(
             color: widget.backgroundColor,
             child: Padding(
@@ -159,7 +163,7 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
         Padding(
           padding: const EdgeInsets.only(
             left: 12.0,
-            top: 1.0,
+            top: 2.0,
           ),
           child: Text(
             widget.label,
