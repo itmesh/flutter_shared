@@ -119,41 +119,43 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
         link: this._layerLink,
         child: Row(
           children: <Widget>[
-            Padding(
-              padding: widget.contentPadding,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      child: Wrap(
-                        children: _selectedItems
-                            .map((T e) => Padding(
-                                  padding: const EdgeInsets.only(right: 6.0),
-                                  child: Chip(
-                                    label: Text(_getName(e)),
-                                    backgroundColor: widget.chipsColor,
-                                    deleteIcon: const Icon(
-                                      Icons.close,
-                                      size: 16,
+            Expanded(
+              child: Padding(
+                padding: widget.contentPadding,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        child: Wrap(
+                          children: _selectedItems
+                              .map((T e) => Padding(
+                                    padding: const EdgeInsets.only(right: 6.0),
+                                    child: Chip(
+                                      label: Text(_getName(e)),
+                                      backgroundColor: widget.chipsColor,
+                                      deleteIcon: const Icon(
+                                        Icons.close,
+                                        size: 16,
+                                      ),
+                                      onDeleted: () {
+                                        _selectedItems.remove(e);
+            
+                                        if (widget.onChanged != null) {
+                                          widget.onChanged!(value);
+                                        }
+            
+                                        setState(() {});
+                                      },
                                     ),
-                                    onDeleted: () {
-                                      _selectedItems.remove(e);
-
-                                      if (widget.onChanged != null) {
-                                        widget.onChanged!(value);
-                                      }
-
-                                      setState(() {});
-                                    },
-                                  ),
-                                ))
-                            .toList(),
+                                  ))
+                              .toList(),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(
