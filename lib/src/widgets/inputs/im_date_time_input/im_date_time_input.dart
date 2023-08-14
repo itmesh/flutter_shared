@@ -336,7 +336,7 @@ class ImDateTimeInput extends StatelessWidget {
       context.setLocale(Locale.fromSubtags(languageCode: languageCode));
 
       final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-      final String formattedTimeOfDay = localizations.formatTimeOfDay(value);
+      final String formattedTimeOfDay = localizations.formatTimeOfDay(value, alwaysUse24HourFormat: true);
 
       return formattedTimeOfDay;
     }
