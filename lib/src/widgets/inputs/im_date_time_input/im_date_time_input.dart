@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:itmesh_flutter_shared/flutter_shared.dart';
 
@@ -8,6 +9,7 @@ class ImDateTimeInput extends StatelessWidget {
     required this.contentPadding,
     required this.finalHeight,
     this.labelText = 'Date',
+    this.languageCode = 'pl',
     this.labelTimeText = 'Hour',
     this.endOfDay = false,
     this.required = true,
@@ -44,6 +46,7 @@ class ImDateTimeInput extends StatelessWidget {
 
   final GlobalKey<FormFieldState<DateTimeInputData>> formFieldKey;
   final String labelText;
+  final String languageCode;
   final String labelTimeText;
   final DateTimeInputData? initialValue;
   final DateTime? firstDate;
@@ -78,6 +81,8 @@ class ImDateTimeInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.setLocale(Locale.fromSubtags(languageCode: languageCode));
+
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: SizedBox(
@@ -171,7 +176,6 @@ class ImDateTimeInput extends StatelessWidget {
             final TimeOfDay initialTimeOfDay = formFieldKeyTime ?? TimeOfDay.now();
             FocusNodeUtil.clearFocus(context);
             final TimeOfDay? result = await showTimePicker(
-              
               routeSettings: const RouteSettings(name: '/time-picker'),
               builder: (BuildContext context, Widget? child) {
                 return MediaQuery(
