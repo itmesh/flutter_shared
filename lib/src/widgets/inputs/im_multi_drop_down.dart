@@ -17,6 +17,7 @@ class ImMultiDropdown<T> extends StatefulWidget {
     this.translateItemtoString,
     this.textStyle,
     this.titleStyle,
+    this.chipsStyle,
     this.subtitleStyle,
     this.backgroundColor,
     this.dropdownColor,
@@ -35,6 +36,7 @@ class ImMultiDropdown<T> extends StatefulWidget {
   final TextStyle? textStyle;
   final TextStyle? titleStyle;
   final TextStyle? subtitleStyle;
+  final TextStyle? chipsStyle;
   final TextStyle labelStyle;
   final Color? backgroundColor;
   final Color? chipsColor;
@@ -133,7 +135,10 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
                               .map((T e) => Padding(
                                     padding: const EdgeInsets.only(right: 6.0),
                                     child: Chip(
-                                      label: Text(_getName(e)),
+                                      label: Text(
+                                        _getName(e),
+                                        style: widget.chipsStyle,
+                                      ),
                                       backgroundColor: widget.chipsColor,
                                       deleteIcon: const Icon(
                                         Icons.close,
