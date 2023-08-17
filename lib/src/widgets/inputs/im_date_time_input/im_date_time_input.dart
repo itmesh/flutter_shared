@@ -331,7 +331,6 @@ class ImDateTimeInput extends StatelessWidget {
   String _getInitialTimeText(FormFieldState<DateTimeInputData> field, BuildContext context) {
     final TimeOfDay? value = field.value?.time;
     if (value != null) {
-      // context.setLocale(Locale.fromSubtags(languageCode: languageCode));
 
       final MaterialLocalizations localizations = MaterialLocalizations.of(context);
       final String formattedTimeOfDay = localizations.formatTimeOfDay(value, alwaysUse24HourFormat: true);
