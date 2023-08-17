@@ -23,6 +23,7 @@ class ImPasswordInput extends StatefulWidget {
     this.focusColor,
     this.errorBorder,
     this.focusedErrorBorder,
+    this.disabledBorder,
     this.fillColor,
     this.hintStyle,
     this.labelStyle,
@@ -52,6 +53,7 @@ class ImPasswordInput extends StatefulWidget {
   final InputBorder? focusedErrorBorder;
   final InputBorder? enabledBorder;
   final InputBorder? focusedBorder;
+  final InputBorder? disabledBorder;
   final InputBorder? border;
   final Color? focusColor;
   final Color? fillColor;
@@ -110,6 +112,7 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
             hintStyle: widget.hintStyle,
             labelStyle: widget.labelStyle,
             floatingLabelStyle: widget.floatingLabelStyle,
+            disabledBorder: widget.disabledBorder,
             enabledBorder: widget.enabledBorder,
             focusedBorder: widget.focusedBorder,
             border: widget.border,

@@ -23,6 +23,7 @@ class ImNumberInput extends StatefulWidget {
     this.showDeleteIcon = true,
     this.suffixTextStyle,
     this.suffixBoxDecoration,
+    this.disabledBorder,
     this.border,
     this.focusedBorder,
     this.enabledBorder,
@@ -61,6 +62,7 @@ class ImNumberInput extends StatefulWidget {
   final TextStyle? floatingLabelStyle;
   final TextStyle? errorStyle;
   final TextStyle? textStyle;
+  final InputBorder? disabledBorder;
   final BoxDecoration? suffixBoxDecoration;
   final InputBorder? border;
   final InputBorder? focusedBorder;
@@ -195,6 +197,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
             floatingLabelStyle: widget.floatingLabelStyle,
             enabledBorder: widget.enabledBorder,
             focusedBorder: widget.focusedBorder,
+            disabledBorder: widget.disabledBorder,
             border: widget.border,
           ),
         ),

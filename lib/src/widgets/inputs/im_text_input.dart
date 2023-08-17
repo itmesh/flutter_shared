@@ -22,6 +22,7 @@ class ImTextInput extends StatefulWidget {
     this.onSubmit,
     this.autofillHints,
     this.withoutSpaces = false,
+    this.disabledBorder,
     this.suffixText,
     this.textStyle,
     this.errorStyle,
@@ -61,6 +62,7 @@ class ImTextInput extends StatefulWidget {
   final InputBorder? errorBorder;
   final InputBorder? focusedErrorBorder;
   final InputBorder? enabledBorder;
+  final InputBorder? disabledBorder;
   final InputBorder? focusedBorder;
   final InputBorder? border;
   final TextStyle? hintStyle;
@@ -133,6 +135,7 @@ class _ImTextInputState extends State<ImTextInput> {
           floatingLabelStyle: widget.floatingLabelStyle,
           enabledBorder: widget.enabledBorder,
           focusedBorder: widget.focusedBorder,
+          disabledBorder: widget.disabledBorder,
           border: widget.border,
         ),
       ),
