@@ -153,46 +153,46 @@ class ImAudioInputState extends State<ImAudioInput> {
   }
 
   Widget _buildAudioInfo(FormFieldState<AudioInputData> field) {
-    if (_selectedValue != null ||
+    if (_selectedValue == null ||
         (_selectedValue?.imageBytes == null && _selectedValue?.imageUrl == null && _selectedValue?.imageFile == null)) {
-      widget.playAudio(_selectedValue!, 'Selected audio file');
-
-      if (widget.audioPlayer != null && widget.positionDataStream != null) {
-        return ImAudioPlayer(
-          audioPlayer: widget.audioPlayer!,
-          positionDataStream: widget.positionDataStream!,
-          showLoadingWhileBuffering: true,
-          allowToChangeExpand: false,
-          onCloseTap: () {
-            widget.closeAudio.call();
-            widget.formFieldKey.currentState?.didChange(null);
-            setState(() {});
-          },
-          initialExpanded: false,
-          playIcon: widget.playIcon,
-          backward15Seconds: widget.backward15Seconds,
-          continueIcon: widget.continueIcon,
-          pauseIcon: widget.pauseIcon,
-          forward15SecondsIcon: widget.forward15SecondsIcon,
-          closeIcon: widget.closeIcon,
-          circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
-          baseBarColor: widget.baseBarColor,
-          bufferedBarColor: widget.bufferedBarColor,
-          progressBarColor: widget.progressBarColor,
-          playerColor: widget.playerColor,
-          timeLabelTextStyleIfExpanded: widget.timeLabelTextStyleIfExpanded,
-          titleStyle: widget.titleStyle,
-          positionTextStyle: widget.positionTextStyle,
-        );
-      } else {
-        return const SizedBox();
-      }
+      return Text(
+        'No file selected',
+        style: widget.infoStyle,
+      );
     }
 
-    return Text(
-      'No file selected',
-      style: widget.infoStyle,
-    );
+    widget.playAudio(_selectedValue!, 'Selected audio file');
+
+    if (widget.audioPlayer != null && widget.positionDataStream != null) {
+      return ImAudioPlayer(
+        audioPlayer: widget.audioPlayer!,
+        positionDataStream: widget.positionDataStream!,
+        showLoadingWhileBuffering: true,
+        allowToChangeExpand: false,
+        onCloseTap: () {
+          widget.closeAudio.call();
+          widget.formFieldKey.currentState?.didChange(null);
+          setState(() {});
+        },
+        initialExpanded: false,
+        playIcon: widget.playIcon,
+        backward15Seconds: widget.backward15Seconds,
+        continueIcon: widget.continueIcon,
+        pauseIcon: widget.pauseIcon,
+        forward15SecondsIcon: widget.forward15SecondsIcon,
+        closeIcon: widget.closeIcon,
+        circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
+        baseBarColor: widget.baseBarColor,
+        bufferedBarColor: widget.bufferedBarColor,
+        progressBarColor: widget.progressBarColor,
+        playerColor: widget.playerColor,
+        timeLabelTextStyleIfExpanded: widget.timeLabelTextStyleIfExpanded,
+        titleStyle: widget.titleStyle,
+        positionTextStyle: widget.positionTextStyle,
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   AudioInputData? get _selectedValue => widget.formFieldKey.currentState?.value;
