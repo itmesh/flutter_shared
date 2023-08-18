@@ -153,7 +153,8 @@ class ImAudioInputState extends State<ImAudioInput> {
   }
 
   Widget _buildAudioInfo(FormFieldState<AudioInputData> field) {
-    if (_selectedValue != null) {
+    if (_selectedValue != null ||
+        (_selectedValue?.imageBytes == null && _selectedValue?.imageUrl == null && _selectedValue?.imageFile == null)) {
       widget.playAudio(_selectedValue!, 'Selected audio file');
 
       if (widget.audioPlayer != null && widget.positionDataStream != null) {
