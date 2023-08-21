@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubit/audio_conrols_cubit.dart';
 
-class AudioControls extends StatelessWidget {
+class AudioControls extends StatefulWidget {
   AudioControls({
     super.key,
     required this.onCloseTap,
@@ -32,19 +32,27 @@ class AudioControls extends StatelessWidget {
 
   final bool isExpanded;
 
-  late final double controlsSize = isExpanded ? 48.0 : 32.0;
+  @override
+  State<AudioControls> createState() => _AudioControlsState();
+}
 
-  late final double playControlSize = isExpanded ? 64.0 : 44.0;
+class _AudioControlsState extends State<AudioControls> {
+  late final double controlsSize = widget.isExpanded ? 48.0 : 32.0;
+  late final double playControlSize = widget.isExpanded ? 64.0 : 44.0;
+  bool _clicked = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AudioControlsCubit>(
-      create: (BuildContext context) => AudioControlsCubit()..init(showLoadingWhileBuffering),
+      create: (BuildContext context) => AudioControlsCubit()..init(widget.showLoadingWhileBuffering),
       child: BlocBuilder<AudioControlsCubit, AudioControlsState>(
         builder: (BuildContext context, AudioControlsState state) {
           switch (state) {
             case AudioControlsLoadingState():
-              return _buildLoading(context);
+              if (_clicked) {
+                return _buildLoading(context);
+              }
+              return _buildLoaded(context);
 
             case AudioControlsNoDataState():
               return const SizedBox();
@@ -70,7 +78,7 @@ class AudioControls extends StatelessWidget {
       width: controlsSize,
       height: controlsSize,
       child: CircularProgressIndicator(
-        color: circularProgressIndicatorColor,
+        color: widget.circularProgressIndicatorColor,
       ),
     );
   }
@@ -78,6 +86,11 @@ class AudioControls extends StatelessWidget {
   Widget _buildLoaded(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (!_clicked) {
+          _clicked = true;
+          setState(() {});
+        }
+        
         final AudioControlsCubit cubit = context.read();
 
         cubit.play();
@@ -86,7 +99,7 @@ class AudioControls extends StatelessWidget {
         child: SizedBox(
           height: playControlSize,
           width: playControlSize,
-          child: playIcon,
+          child: widget.playIcon,
         ),
       ),
     );
@@ -101,7 +114,7 @@ class AudioControls extends StatelessWidget {
             child: SizedBox(
               height: controlsSize,
               width: controlsSize,
-              child: backward15Seconds,
+              child: widget.backward15Seconds,
             ),
           ),
           onTap: () {
@@ -113,7 +126,7 @@ class AudioControls extends StatelessWidget {
         const SizedBox(width: 16.0),
         _buildActionIcon(context, state.isPlaying),
         const SizedBox(width: 16.0),
-        isExpanded ? _buildForward15Sec(context) : _buildCloseIcon(),
+        widget.isExpanded ? _buildForward15Sec(context) : _buildCloseIcon(),
       ],
     );
   }
@@ -154,7 +167,7 @@ class AudioControls extends StatelessWidget {
           child: SizedBox(
             height: controlsSize,
             width: controlsSize,
-            child: continueIcon,
+            child: widget.continueIcon,
           ),
         ),
       );
@@ -170,7 +183,7 @@ class AudioControls extends StatelessWidget {
         child: SizedBox(
           height: controlsSize,
           width: controlsSize,
-          child: pauseIcon,
+          child: widget.pauseIcon,
         ),
       ),
     );
@@ -187,7 +200,7 @@ class AudioControls extends StatelessWidget {
         child: SizedBox(
           height: controlsSize,
           width: controlsSize,
-          child: forward15SecondsIcon,
+          child: widget.forward15SecondsIcon,
         ),
       ),
     );
@@ -195,12 +208,12 @@ class AudioControls extends StatelessWidget {
 
   Widget _buildCloseIcon() {
     return GestureDetector(
-      onTap: onCloseTap,
+      onTap: widget.onCloseTap,
       child: Center(
         child: SizedBox(
           height: controlsSize,
           width: controlsSize,
-          child: closeIcon,
+          child: widget.closeIcon,
         ),
       ),
     );
