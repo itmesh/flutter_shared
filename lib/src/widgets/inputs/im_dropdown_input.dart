@@ -187,11 +187,14 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
             children: <Widget>[
               field.value == null
                   ? const SizedBox()
-                  : Padding(
-                      padding: const EdgeInsets.only(right: 6.0),
-                      child: Text(
-                        _getName(field.value),
-                        style: widget.textStyle,
+                  : Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: Text(
+                          _getName(field.value),
+                          style: widget.textStyle,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
               if (widget.expandDropdownIcon != null) widget.expandDropdownIcon!,
