@@ -15,6 +15,7 @@ class AudioControls extends StatefulWidget {
     required this.pauseIcon,
     required this.forward15SecondsIcon,
     required this.closeIcon,
+    required this.isInitialPlaying,
     this.isExpanded = false,
     this.circularProgressIndicatorColor,
   });
@@ -31,6 +32,7 @@ class AudioControls extends StatefulWidget {
   final Widget closeIcon;
 
   final bool isExpanded;
+  final bool isInitialPlaying;
 
   @override
   State<AudioControls> createState() => _AudioControlsState();
@@ -55,9 +57,29 @@ class _AudioControlsState extends State<AudioControls> {
               return _buildLoaded(context);
 
             case AudioControlsNoDataState():
-              return SizedBox(
-                height: controlsSize,
-              );
+              if (widget.isInitialPlaying) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Center(
+                      child: SizedBox(
+                        height: controlsSize,
+                        width: controlsSize,
+                        child: widget.backward15Seconds,
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    SizedBox(
+                      height: controlsSize,
+                      width: controlsSize,
+                    ),
+                    const SizedBox(width: 16.0),
+                    widget.isExpanded ? _buildForward15Sec(context) : _buildCloseIcon(),
+                  ],
+                );
+              }
+
+              return _buildLoaded(context);
 
             case AudioControlsLoadedState():
               return _buildLoaded(context);

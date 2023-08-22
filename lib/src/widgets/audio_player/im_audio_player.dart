@@ -60,6 +60,7 @@ class ImAudioPlayer extends StatefulWidget {
 
 class _ImAudioPlayerState extends State<ImAudioPlayer> {
   bool _isExpanded = false;
+  bool _initialPlaying = false;
 
   @override
   void initState() {
@@ -122,6 +123,7 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
                   pauseIcon: widget.pauseIcon,
                   forward15SecondsIcon: widget.forward15SecondsIcon,
                   circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
+                  isInitialPlaying: _initialPlaying,
                 ),
                 const SizedBox(height: 16.0),
               ],
@@ -176,6 +178,7 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
                       pauseIcon: widget.pauseIcon,
                       forward15SecondsIcon: widget.forward15SecondsIcon,
                       circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
+                      isInitialPlaying: _initialPlaying,
                     ),
                   ],
                 ),
@@ -194,7 +197,9 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
       builder: (BuildContext context, AsyncSnapshot<SequenceState?> snapshot) {
         final SequenceState? state = snapshot.data;
         if (state?.sequence.isEmpty ?? true) {
-          return const SizedBox();
+          return const SizedBox(
+            height: 18.0,
+          );
         }
 
         final MediaItem metadata = state!.currentSource!.tag as MediaItem;
@@ -221,6 +226,7 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
         }
 
         if (positionData.position == Duration.zero) {
+          _initialPlaying = false;
           return SizedBox(
             height: 14.0,
             child: Text(
@@ -231,6 +237,7 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
         }
 
         if (positionData.position != Duration.zero) {
+          _initialPlaying = true;
           return SizedBox(
             height: 14.0,
             child: Text(
@@ -251,8 +258,8 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
       builder: (BuildContext context, AsyncSnapshot<PositionData?> snapshot) {
         final PositionData? positionData = snapshot.data;
         if (snapshot.data == null && _isExpanded) {
-          return const SizedBox(
-            height: 46.0,
+          return SizedBox(
+            height: _initialPlaying ? 46.0 : 28.0,
             width: double.maxFinite,
           );
         }
