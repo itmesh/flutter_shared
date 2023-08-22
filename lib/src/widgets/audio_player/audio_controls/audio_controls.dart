@@ -55,7 +55,9 @@ class _AudioControlsState extends State<AudioControls> {
               return _buildLoaded(context);
 
             case AudioControlsNoDataState():
-              return const SizedBox();
+              return SizedBox(
+                height: controlsSize,
+              );
 
             case AudioControlsLoadedState():
               return _buildLoaded(context);
@@ -90,7 +92,7 @@ class _AudioControlsState extends State<AudioControls> {
           _clicked = true;
           setState(() {});
         }
-        
+
         final AudioControlsCubit cubit = context.read();
 
         cubit.play();

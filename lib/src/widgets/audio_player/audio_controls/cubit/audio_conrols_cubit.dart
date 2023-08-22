@@ -9,7 +9,7 @@ import 'package:rxdart/rxdart.dart';
 part 'audio_conrols_state.dart';
 
 class AudioControlsCubit extends ImCubit<AudioControlsState> {
-  AudioControlsCubit() : super(const AudioControlsLoadingState());
+  AudioControlsCubit() : super(const AudioControlsNoDataState());
 
   final AudioPlayerManager _audioPlayerManager = GetIt.instance();
 

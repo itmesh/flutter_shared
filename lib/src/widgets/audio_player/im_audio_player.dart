@@ -252,7 +252,7 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
         final PositionData? positionData = snapshot.data;
         if (snapshot.data == null && _isExpanded) {
           return const SizedBox(
-            height: 65.0,
+            height: 46.0,
             width: double.maxFinite,
           );
         }
