@@ -89,8 +89,12 @@ class ImDateTimeInput extends StatelessWidget {
           key: formFieldKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (DateTimeInputData? value) {
-            if (!required) {
+            if (!required && validator == null) {
               return null;
+            }
+
+            if (required && validator != null) {
+              return validator?.call(value);
             }
 
             if (value?.date == null) {
