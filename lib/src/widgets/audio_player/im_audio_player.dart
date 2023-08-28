@@ -184,6 +184,9 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
                 ),
               ),
               _buildProgressBar(),
+              SizedBox(
+                height: MediaQuery.of(context).padding.bottom,
+              ),
             ],
           ),
         ),
