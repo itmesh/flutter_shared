@@ -38,6 +38,7 @@ class ImNumberInput extends StatefulWidget {
     this.focusedErrorBorder,
     this.errorBorder,
     this.textAlignVertical,
+    this.hoverColor,
   });
 
   final String? labelText;
@@ -57,6 +58,7 @@ class ImNumberInput extends StatefulWidget {
   final bool showDeleteIcon;
   final Widget? deleteIcon;
   final Color? focusColor;
+  final Color? hoverColor;
   final TextStyle? suffixTextStyle;
   final TextStyle? hintStyle;
   final TextStyle? labelStyle;
@@ -151,6 +153,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           key: widget.formFieldKey,
           obscureText: widget.obscureText,
           decoration: InputDecoration(
+            hoverColor: widget.hoverColor,
             contentPadding: widget.contentPadding,
             errorStyle: widget.errorStyle,
             focusColor: widget.focusColor,

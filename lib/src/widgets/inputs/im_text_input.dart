@@ -37,6 +37,7 @@ class ImTextInput extends StatefulWidget {
     this.focusedBorder,
     this.border,
     this.textAlignVertial,
+    this.hoverColor,
   });
 
   final String? labelText;
@@ -58,6 +59,7 @@ class ImTextInput extends StatefulWidget {
   final String? suffixText;
   final Color? focusColor;
   final Color? fillColor;
+  final Color? hoverColor;
   final TextStyle? textStyle;
   final TextStyle? errorStyle;
   final InputBorder? errorBorder;
@@ -122,6 +124,7 @@ class _ImTextInputState extends State<ImTextInput> {
               ]
             : null,
         decoration: InputDecoration(
+          hoverColor: widget.hoverColor,
           contentPadding: widget.contentPadding,
           errorStyle: widget.errorStyle,
           suffixText: widget.suffixText,
