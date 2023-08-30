@@ -36,6 +36,7 @@ class ImTextInput extends StatefulWidget {
     this.enabledBorder,
     this.focusedBorder,
     this.border,
+    this.textAlignVertial,
   });
 
   final String? labelText;
@@ -70,6 +71,7 @@ class ImTextInput extends StatefulWidget {
   final TextStyle? floatingLabelStyle;
   final double finalHeight;
   final EdgeInsets contentPadding;
+  final TextAlignVertical? textAlignVertial;
 
   @override
   State<ImTextInput> createState() => _ImTextInputState();
@@ -88,6 +90,7 @@ class _ImTextInputState extends State<ImTextInput> {
     return SizedBox(
       height: widget.finalHeight,
       child: TextFormField(
+        textAlignVertical: widget.textAlignVertial,
         style: widget.textStyle,
         autofillHints: widget.autofillHints,
         keyboardType: TextInputType.multiline,
