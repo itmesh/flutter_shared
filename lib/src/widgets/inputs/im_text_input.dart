@@ -13,6 +13,7 @@ class ImTextInput extends StatefulWidget {
     this.focusNode,
     this.controller,
     this.isRequired = false,
+    this.suffix,
     this.maxLines = 1,
     this.minLines,
     this.validator,
@@ -45,6 +46,7 @@ class ImTextInput extends StatefulWidget {
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final bool isRequired;
+  final Widget? suffix;
   final int? maxLines;
   final int? minLines;
   final FormFieldValidator<String>? validator;
@@ -137,6 +139,7 @@ class _ImTextInputState extends State<ImTextInput> {
           focusedBorder: widget.focusedBorder,
           disabledBorder: widget.disabledBorder,
           border: widget.border,
+          suffix: widget.suffix,
         ),
       ),
     );
