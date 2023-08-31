@@ -96,36 +96,53 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
               left: 16.0,
               right: 16.0,
             ),
-            child: Column(
+            child: Stack(
               children: <Widget>[
-                Container(
-                  width: 26.0,
-                  height: 4.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.75),
-                    borderRadius: BorderRadius.circular(2.0),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    width: 26.0,
+                    height: 4.0,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.75),
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 8.0),
-                _buildMetadataInfo(),
-                const SizedBox(height: 16.0),
-                _buildProgressBar(),
-                const SizedBox(height: 24.0),
-                AudioControls(
-                  onCloseTap: widget.onCloseTap,
-                  isUserOnLessonDetailsScreen: widget.allowToChangeExpand,
-                  isExpanded: _isExpanded,
-                  showLoadingWhileBuffering: widget.showLoadingWhileBuffering,
-                  closeIcon: widget.closeIcon,
-                  playIcon: widget.playIcon,
-                  backward15Seconds: widget.backward15Seconds,
-                  continueIcon: widget.continueIcon,
-                  pauseIcon: widget.pauseIcon,
-                  forward15SecondsIcon: widget.forward15SecondsIcon,
-                  circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
-                  isInitialPlaying: _initialPlaying,
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: _buildMetadataInfo(),
+                  ),
                 ),
-                const SizedBox(height: 16.0),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 44),
+                    child: _buildProgressBar(),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: AudioControls(
+                      onCloseTap: widget.onCloseTap,
+                      isUserOnLessonDetailsScreen: widget.allowToChangeExpand,
+                      isExpanded: _isExpanded,
+                      showLoadingWhileBuffering: widget.showLoadingWhileBuffering,
+                      closeIcon: widget.closeIcon,
+                      playIcon: widget.playIcon,
+                      backward15Seconds: widget.backward15Seconds,
+                      continueIcon: widget.continueIcon,
+                      pauseIcon: widget.pauseIcon,
+                      circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
+                      isInitialPlaying: _initialPlaying,
+                      forward15SecondsIcon: widget.forward15SecondsIcon,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -176,9 +193,9 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
                       backward15Seconds: widget.backward15Seconds,
                       continueIcon: widget.continueIcon,
                       pauseIcon: widget.pauseIcon,
-                      forward15SecondsIcon: widget.forward15SecondsIcon,
                       circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
                       isInitialPlaying: _initialPlaying,
+                      forward15SecondsIcon: widget.forward15SecondsIcon,
                     ),
                   ],
                 ),
@@ -262,14 +279,14 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
         final PositionData? positionData = snapshot.data;
         if (snapshot.data == null && _isExpanded) {
           return SizedBox(
-            height: _initialPlaying ? 46.0 : 28.0,
+            height: _initialPlaying ? 48.0 : 28.0,
             width: double.maxFinite,
           );
         }
 
         if (positionData?.position == Duration.zero) {
-          return const SizedBox(
-            height: 20.0,
+          return SizedBox(
+            height: _isExpanded ? 38 : 20.0,
             width: double.maxFinite,
           );
         }
