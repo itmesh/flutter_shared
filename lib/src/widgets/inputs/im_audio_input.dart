@@ -33,6 +33,7 @@ class ImAudioInput extends StatefulWidget {
     this.timeLabelTextStyleIfExpanded,
     this.titleStyle,
     this.positionTextStyle,
+    this.requiredTextError,
   });
 
   final AudioInputData? initAudioInputData;
@@ -60,6 +61,7 @@ class ImAudioInput extends StatefulWidget {
   final TextStyle? timeLabelTextStyleIfExpanded;
   final TextStyle? titleStyle;
   final TextStyle? positionTextStyle;
+  final String? requiredTextError;
 
   @override
   State<ImAudioInput> createState() => ImAudioInputState();
@@ -73,7 +75,11 @@ class ImAudioInputState extends State<ImAudioInput> {
       key: widget.formFieldKey,
       validator: (AudioInputData? value) {
         if (widget.isRequired && value == null) {
-          return 'This field is required';
+          if (widget.requiredTextError == null) {
+            return 'This field is required';
+          } else {
+            return '${widget.requiredTextError}';
+          }
         }
 
         if (widget.validator != null) {

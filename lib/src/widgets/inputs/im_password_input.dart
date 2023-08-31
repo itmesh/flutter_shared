@@ -31,6 +31,7 @@ class ImPasswordInput extends StatefulWidget {
     this.enabledBorder,
     this.focusedBorder,
     this.border,
+    this.requiredTextError,
   });
 
   final String? labelText;
@@ -61,6 +62,7 @@ class ImPasswordInput extends StatefulWidget {
   final Widget passwordVisibleIcon;
   final double finalHeight;
   final EdgeInsets contentPadding;
+  final String? requiredTextError;
 
   @override
   State<ImPasswordInput> createState() => _ImPasswordInputState();
@@ -85,7 +87,11 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
           onFieldSubmitted: (String value) => widget.onSubmit?.call(),
           validator: (String? value) {
             if (widget.required && (value == null || value.isEmpty)) {
-              return 'Required field';
+              if (widget.requiredTextError == null) {
+                return 'Required field';
+              } else {
+                return '${widget.requiredTextError}';
+              }
             }
 
             if (widget.validator != null) {
@@ -99,7 +105,7 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
           key: widget.formFieldKey,
           obscureText: _passwordNotVisible,
           decoration: InputDecoration(
-            contentPadding:widget.contentPadding,
+            contentPadding: widget.contentPadding,
             errorStyle: widget.errorStyle,
             hintText: widget.hintText,
             focusColor: widget.focusColor,

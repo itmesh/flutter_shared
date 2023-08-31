@@ -37,6 +37,7 @@ class ImNumberInput extends StatefulWidget {
     this.focusColor,
     this.focusedErrorBorder,
     this.errorBorder,
+    this.requiredTextError,
   });
 
   final String? labelText;
@@ -73,6 +74,8 @@ class ImNumberInput extends StatefulWidget {
   final double inputHeight;
   final double finalHeight;
   final EdgeInsets contentPadding;
+  final String? requiredTextError;
+
   @override
   State<ImNumberInput> createState() => _ImNumberInputState();
 }
@@ -89,7 +92,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
   Widget _buildContent() {
     return Row(
       children: <Widget>[
-        _buiBhFormField(),
+        _buildFormField(),
         if (widget.suffixText != null)
           Column(
             children: <Widget>[
@@ -114,7 +117,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
     );
   }
 
-  Widget _buiBhFormField() {
+  Widget _buildFormField() {
     return Expanded(
       child: SizedBox(
         height: widget.finalHeight,
@@ -130,7 +133,11 @@ class _ImNumberInputState extends State<ImNumberInput> {
           onFieldSubmitted: (String value) => widget.onSubmit?.call(),
           validator: (String? value) {
             if (widget.required && (value == null || value.isEmpty)) {
-              return 'Field is required';
+              if (widget.requiredTextError == null) {
+                return 'Field is required';
+              } else {
+                return '${widget.requiredTextError}';
+              }
             }
 
             if (widget.validator != null) {
