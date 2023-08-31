@@ -92,7 +92,7 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
         key: widget.formFieldKey,
         validator: (T? value) {
           if (widget.isRequired && (value == null || value == false)) {
-            return 'Field is required';
+            return 'To pole jest wymagane';
           }
 
           if (widget.validator != null) {

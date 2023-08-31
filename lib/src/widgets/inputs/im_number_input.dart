@@ -130,7 +130,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           onFieldSubmitted: (String value) => widget.onSubmit?.call(),
           validator: (String? value) {
             if (widget.required && (value == null || value.isEmpty)) {
-              return 'Field is required';
+              return 'To pole jest wymagane';
             }
 
             if (widget.validator != null) {

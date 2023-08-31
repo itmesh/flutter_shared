@@ -85,7 +85,7 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
           onFieldSubmitted: (String value) => widget.onSubmit?.call(),
           validator: (String? value) {
             if (widget.required && (value == null || value.isEmpty)) {
-              return 'Required field';
+              return 'To pole jest wymagane';
             }
 
             if (widget.validator != null) {
@@ -99,7 +99,7 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
           key: widget.formFieldKey,
           obscureText: _passwordNotVisible,
           decoration: InputDecoration(
-            contentPadding:widget.contentPadding,
+            contentPadding: widget.contentPadding,
             errorStyle: widget.errorStyle,
             hintText: widget.hintText,
             focusColor: widget.focusColor,

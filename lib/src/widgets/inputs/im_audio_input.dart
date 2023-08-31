@@ -73,7 +73,7 @@ class ImAudioInputState extends State<ImAudioInput> {
       key: widget.formFieldKey,
       validator: (AudioInputData? value) {
         if (widget.isRequired && value == null) {
-          return 'This field is required';
+          return 'To pole jest wymagane';
         }
 
         if (widget.validator != null) {
