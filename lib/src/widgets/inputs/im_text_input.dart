@@ -37,6 +37,8 @@ class ImTextInput extends StatefulWidget {
     this.enabledBorder,
     this.focusedBorder,
     this.border,
+    this.textAlignVertial,
+    this.hoverColor,
   });
 
   final String? labelText;
@@ -59,6 +61,7 @@ class ImTextInput extends StatefulWidget {
   final String? suffixText;
   final Color? focusColor;
   final Color? fillColor;
+  final Color? hoverColor;
   final TextStyle? textStyle;
   final TextStyle? errorStyle;
   final InputBorder? errorBorder;
@@ -72,6 +75,7 @@ class ImTextInput extends StatefulWidget {
   final TextStyle? floatingLabelStyle;
   final double finalHeight;
   final EdgeInsets contentPadding;
+  final TextAlignVertical? textAlignVertial;
 
   @override
   State<ImTextInput> createState() => _ImTextInputState();
@@ -90,6 +94,7 @@ class _ImTextInputState extends State<ImTextInput> {
     return SizedBox(
       height: widget.finalHeight,
       child: TextFormField(
+        textAlignVertical: widget.textAlignVertial,
         style: widget.textStyle,
         autofillHints: widget.autofillHints,
         keyboardType: TextInputType.multiline,
@@ -121,6 +126,7 @@ class _ImTextInputState extends State<ImTextInput> {
               ]
             : null,
         decoration: InputDecoration(
+          hoverColor: widget.hoverColor,
           contentPadding: widget.contentPadding,
           errorStyle: widget.errorStyle,
           suffixText: widget.suffixText,

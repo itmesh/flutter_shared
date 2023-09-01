@@ -31,6 +31,7 @@ class ImPasswordInput extends StatefulWidget {
     this.enabledBorder,
     this.focusedBorder,
     this.border,
+    this.hoverColor,
   });
 
   final String? labelText;
@@ -57,6 +58,7 @@ class ImPasswordInput extends StatefulWidget {
   final InputBorder? border;
   final Color? focusColor;
   final Color? fillColor;
+  final Color? hoverColor;
   final Widget passwordNotVisibleIcon;
   final Widget passwordVisibleIcon;
   final double finalHeight;
@@ -99,7 +101,8 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
           key: widget.formFieldKey,
           obscureText: _passwordNotVisible,
           decoration: InputDecoration(
-            contentPadding:widget.contentPadding,
+            hoverColor: widget.hoverColor,
+            contentPadding: widget.contentPadding,
             errorStyle: widget.errorStyle,
             hintText: widget.hintText,
             focusColor: widget.focusColor,
