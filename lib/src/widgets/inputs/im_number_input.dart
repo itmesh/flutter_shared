@@ -136,7 +136,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
               if (widget.requiredTextError == null) {
                 return 'Field is required';
               } else {
-                return '${widget.requiredTextError}';
+                return widget.requiredTextError;
               }
             }
 

@@ -107,7 +107,7 @@ class _ImTextInputState extends State<ImTextInput> {
             if (widget.requiredTextError == null) {
               return 'Required field';
             } else {
-              return '${widget.requiredTextError}';
+              return widget.requiredTextError;
             }
           }
 

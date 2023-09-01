@@ -90,7 +90,7 @@ class _ImPasswordInputState extends State<ImPasswordInput> {
               if (widget.requiredTextError == null) {
                 return 'Required field';
               } else {
-                return '${widget.requiredTextError}';
+                return widget.requiredTextError;
               }
             }
 

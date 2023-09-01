@@ -78,7 +78,7 @@ class ImAudioInputState extends State<ImAudioInput> {
           if (widget.requiredTextError == null) {
             return 'This field is required';
           } else {
-            return '${widget.requiredTextError}';
+            return widget.requiredTextError;
           }
         }
 
