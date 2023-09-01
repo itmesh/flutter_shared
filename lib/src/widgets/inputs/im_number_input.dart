@@ -37,6 +37,8 @@ class ImNumberInput extends StatefulWidget {
     this.focusColor,
     this.focusedErrorBorder,
     this.errorBorder,
+    this.textAlignVertical,
+    this.hoverColor,
     this.requiredTextError,
   });
 
@@ -57,6 +59,7 @@ class ImNumberInput extends StatefulWidget {
   final bool showDeleteIcon;
   final Widget? deleteIcon;
   final Color? focusColor;
+  final Color? hoverColor;
   final TextStyle? suffixTextStyle;
   final TextStyle? hintStyle;
   final TextStyle? labelStyle;
@@ -76,6 +79,7 @@ class ImNumberInput extends StatefulWidget {
   final EdgeInsets contentPadding;
   final String? requiredTextError;
 
+  final TextAlignVertical? textAlignVertical;
   @override
   State<ImNumberInput> createState() => _ImNumberInputState();
 }
@@ -131,6 +135,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           controller: widget.controller,
           enabled: widget.enabled,
           onFieldSubmitted: (String value) => widget.onSubmit?.call(),
+          textAlignVertical: widget.textAlignVertical,
           validator: (String? value) {
             if (widget.required && (value == null || value.isEmpty)) {
               if (widget.requiredTextError == null) {
@@ -155,6 +160,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           key: widget.formFieldKey,
           obscureText: widget.obscureText,
           decoration: InputDecoration(
+            hoverColor: widget.hoverColor,
             contentPadding: widget.contentPadding,
             errorStyle: widget.errorStyle,
             focusColor: widget.focusColor,
