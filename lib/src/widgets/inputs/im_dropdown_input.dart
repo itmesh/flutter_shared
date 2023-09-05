@@ -29,7 +29,70 @@ class ImDropdownInput<T> extends StatefulWidget {
     this.dropdownColor,
     this.titleStyle,
     this.subtitleStyle,
+    this.tileHoverColor,
+    this.dropdownBorderRadius,
+    this.showDropdownShadow = false,
+    this.dropdownExpandedColorStyle,
+    this.expandDropdownIconExpanded,
   }) : super(key: key);
+
+  ImDropdownInput.letsDanceDropdownInput({
+    Key? key,
+    required Set<T> values,
+    required String label,
+    required TextStyle labelStyle,
+    required double inputHeight,
+    required double finalHeight,
+    required EdgeInsets contentPadding,
+    GlobalKey<FormFieldState<T>>? formFieldKey,
+    T? initialValue,
+    void Function(T? value)? onChanged,
+    void Function(List<T> elements)? customSorting,
+    FormFieldValidator<T>? validator,
+    bool isRequired = false,
+    bool enabled = true,
+    String Function(T? element)? translateItemtoString,
+    String Function(T? element)? translateItemtoSubtitle,
+    TextStyle? errorStyle,
+    Color? backgroundColor,
+    BoxDecoration? dropdownDecoration,
+    TextStyle? textStyle,
+    Widget? expandDropdownIcon,
+    TextStyle? titleStyle,
+    TextStyle? subtitleStyle,
+    Color? dropdownExpandedColorStyle,
+    Widget? expandDropdownIconExpanded,
+    Color? tileHoverColor,
+    Color? dropdownColor,
+  })  : values = values,
+        dropdownBorderRadius = BorderRadius.circular(6),
+        label = label,
+        labelStyle = labelStyle,
+        inputHeight = inputHeight,
+        finalHeight = finalHeight,
+        contentPadding = contentPadding,
+        formFieldKey = formFieldKey,
+        initialValue = initialValue,
+        onChanged = onChanged,
+        customSorting = customSorting,
+        validator = validator,
+        isRequired = isRequired,
+        enabled = enabled,
+        translateItemtoString = translateItemtoString,
+        translateItemtoSubtitle = translateItemtoSubtitle,
+        errorStyle = errorStyle,
+        backgroundColor = backgroundColor,
+        dropdownDecoration = dropdownDecoration,
+        textStyle = textStyle,
+        expandDropdownIcon = expandDropdownIcon,
+        dropdownColor = dropdownColor ?? const Color(0xffF0F3F9),
+        titleStyle = titleStyle,
+        subtitleStyle = subtitleStyle,
+        tileHoverColor = tileHoverColor ?? const Color.fromARGB(127, 220, 222, 247),
+        showDropdownShadow = true,
+        dropdownExpandedColorStyle = dropdownExpandedColorStyle,
+        expandDropdownIconExpanded = expandDropdownIconExpanded,
+        super(key: key);
 
   final void Function(T? value)? onChanged;
   final String Function(T? element)? translateItemtoString;
@@ -49,11 +112,16 @@ class ImDropdownInput<T> extends StatefulWidget {
   final TextStyle labelStyle;
   final Color? backgroundColor;
   final Color? dropdownColor;
-  final Decoration? dropdownDecoration;
+  final BoxDecoration? dropdownDecoration;
+  final Color? dropdownExpandedColorStyle;
   final Widget? expandDropdownIcon;
   final double inputHeight;
   final double finalHeight;
   final EdgeInsets contentPadding;
+  final Color? tileHoverColor;
+  final BorderRadius? dropdownBorderRadius;
+  final Widget? expandDropdownIconExpanded;
+  final bool showDropdownShadow;
 
   @override
   State<ImDropdownInput<T>> createState() => ImDropdownInputState<T>();
@@ -167,7 +235,11 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
           ),
           child: Text(
             widget.label,
-            style: widget.labelStyle,
+            style: (_isOpen && widget.dropdownExpandedColorStyle != null)
+                ? widget.labelStyle.copyWith(
+                    color: widget.dropdownExpandedColorStyle,
+                  )
+                : widget.labelStyle,
           ),
         ),
       ],
@@ -177,7 +249,9 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
   Widget _buildDropDown(FormFieldState<T> field) {
     return Container(
       height: widget.inputHeight,
-      decoration: widget.dropdownDecoration,
+      decoration: (_isOpen && widget.dropdownExpandedColorStyle != null)
+          ? widget.dropdownDecoration?.copyWith(border: Border.all(color: widget.dropdownExpandedColorStyle!))
+          : widget.dropdownDecoration,
       child: CompositedTransformTarget(
         link: this._layerLink,
         child: Padding(
@@ -197,7 +271,10 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
                         ),
                       ),
                     ),
-              if (widget.expandDropdownIcon != null) widget.expandDropdownIcon!,
+              if (widget.expandDropdownIcon != null && widget.expandDropdownIconExpanded != null)
+                _isOpen ? widget.expandDropdownIconExpanded! : widget.expandDropdownIcon!,
+              if (widget.expandDropdownIcon != null && widget.expandDropdownIconExpanded == null)
+                widget.expandDropdownIcon!,
             ],
           ),
         ),
@@ -231,59 +308,91 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
                 offset: Offset(0, size.height),
                 link: _layerLink,
                 showWhenUnlinked: false,
-                child: Material(
-                  elevation: 0,
-                  borderRadius: BorderRadius.zero,
-                  color: widget.dropdownColor,
-                  child: SizeTransition(
-                    axisAlignment: 1,
-                    sizeFactor: _expandAnimation,
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: maxHeight,
-                      ),
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        children: widget.values
-                            .map(
-                              (T item) => GestureDetector(
-                                onTap: () {
-                                  _itemChange(item, field);
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    boxShadow: widget.showDropdownShadow
+                        ? <BoxShadow>[
+                            const BoxShadow(
+                              offset: Offset(0, 2),
+                              blurRadius: 6,
+                              spreadRadius: 2,
+                              color: Color.fromRGBO(0, 0, 0, 0.15),
+                            ),
+                            const BoxShadow(
+                              offset: Offset(0, 4),
+                              blurRadius: 4,
+                              spreadRadius: 0,
+                              color: Color.fromRGBO(0, 0, 0, 0.25),
+                            ),
+                          ]
+                        : <BoxShadow>[],
+                  ),
+                  child: Material(
+                    elevation: 0,
+                    borderRadius: widget.dropdownBorderRadius ?? BorderRadius.zero,
+                    color: widget.dropdownColor,
+                    child: SizeTransition(
+                      axisAlignment: 1,
+                      sizeFactor: _expandAnimation,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: maxHeight,
+                        ),
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          children: widget.values.map((T item) {
+                            final ValueNotifier<bool> isHovered = ValueNotifier<bool>(false);
 
-                                  _overlayEntry.markNeedsBuild();
-                                  _toggleDropdown(widgetContext, field, close: true);
-                                  setState(() {});
+                            return GestureDetector(
+                              onTap: () {
+                                _itemChange(item, field);
+
+                                _overlayEntry.markNeedsBuild();
+                                _toggleDropdown(widgetContext, field, close: true);
+                                setState(() {});
+                              },
+                              child: MouseRegion(
+                                onEnter: (_) {
+                                  isHovered.value = true;
                                 },
-                                child: Container(
-                                  color: Colors.black.withOpacity(0.0),
-                                  height: widget.translateItemtoSubtitle == null ? 40 : 85,
-                                  width: double.minPositive,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 12.0),
-                                    child: widget.translateItemtoSubtitle == null
-                                        ? Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              _getName(item),
-                                              style: widget.titleStyle,
+                                onExit: (_) {
+                                  isHovered.value = false;
+                                },
+                                child: ValueListenableBuilder<bool>(
+                                  valueListenable: isHovered,
+                                  builder: (_, bool isHovered, __) => Container(
+                                    color: _getTileHoverColor(isHovered),
+                                    height: widget.translateItemtoSubtitle == null ? 40 : 85,
+                                    width: double.minPositive,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 12.0),
+                                      child: widget.translateItemtoSubtitle == null
+                                          ? Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                _getName(item),
+                                                style: widget.titleStyle,
+                                              ),
+                                            )
+                                          : ListTile(
+                                              hoverColor: widget.tileHoverColor,
+                                              title: Text(
+                                                _getName(item),
+                                                style: widget.titleStyle,
+                                              ),
+                                              subtitle: Text(
+                                                _getSubtitle(item),
+                                                style: widget.subtitleStyle,
+                                              ),
                                             ),
-                                          )
-                                        : ListTile(
-                                            title: Text(
-                                              _getName(item),
-                                              style: widget.titleStyle,
-                                            ),
-                                            subtitle: Text(
-                                              _getSubtitle(item),
-                                              style: widget.subtitleStyle,
-                                            ),
-                                          ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            )
-                            .toList(),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ),
@@ -294,6 +403,14 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
         ),
       ),
     );
+  }
+
+  Color _getTileHoverColor(bool isHovered) {
+    return isHovered
+        ? widget.tileHoverColor != null
+            ? widget.tileHoverColor!
+            : Colors.black.withOpacity(0.0)
+        : Colors.black.withOpacity(0.0);
   }
 
   String _getName(T? e) {
