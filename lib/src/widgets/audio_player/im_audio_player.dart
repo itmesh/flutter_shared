@@ -22,6 +22,10 @@ class ImAudioPlayer extends StatefulWidget {
     this.timeLabelTextStyleIfExpanded,
     this.playerColor,
     this.titleStyle,
+    this.on15secBackBigTap,
+    this.on15secNextBigTap,
+    this.on15secBackTap,
+    this.onPauseTap,
     this.positionTextStyle,
     required this.playIcon,
     required this.backward15Seconds,
@@ -38,6 +42,10 @@ class ImAudioPlayer extends StatefulWidget {
   final bool initialExpanded;
   final void Function() onCloseTap;
   final void Function()? onWidgetTapIfCantExpand;
+  final void Function()? on15secBackTap;
+  final void Function()? onPauseTap;
+  final void Function()? on15secBackBigTap;
+  final void Function()? on15secNextBigTap;
   final bool showLoadingWhileBuffering;
   final Color? baseBarColor;
   final Color? bufferedBarColor;
@@ -140,6 +148,10 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
                       circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
                       isInitialPlaying: _initialPlaying,
                       forward15SecondsIcon: widget.forward15SecondsIcon,
+                      on15secBackTap: widget.on15secBackTap,
+                      on15secNextBigTap: widget.on15secNextBigTap,
+                      onPauseTap: widget.onPauseTap,
+                      on15secBackBigTap: widget.on15secBackBigTap,
                     ),
                   ),
                 ),
@@ -196,6 +208,10 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
                       circularProgressIndicatorColor: widget.circularProgressIndicatorColor,
                       isInitialPlaying: _initialPlaying,
                       forward15SecondsIcon: widget.forward15SecondsIcon,
+                      on15secBackTap: widget.on15secBackTap,
+                      on15secNextBigTap: widget.on15secNextBigTap,
+                      onPauseTap: widget.onPauseTap,
+                      on15secBackBigTap: widget.on15secBackBigTap,
                     ),
                   ],
                 ),
