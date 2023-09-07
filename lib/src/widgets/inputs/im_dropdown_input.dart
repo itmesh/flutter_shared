@@ -213,15 +213,20 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
                         ),
                       ),
                     ),
-              if (widget.expandDropdownIcon != null && widget.expandDropdownIconExpanded != null)
-                _isOpen ? widget.expandDropdownIconExpanded! : widget.expandDropdownIcon!,
-              if (widget.expandDropdownIcon != null && widget.expandDropdownIconExpanded == null)
-                widget.expandDropdownIcon!,
+              _buildDropdownSuffix(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildDropdownSuffix() {
+    if (widget.expandDropdownIcon != null && widget.expandDropdownIconExpanded != null)
+      return _isOpen ? widget.expandDropdownIconExpanded! : widget.expandDropdownIcon!;
+    if (widget.expandDropdownIcon != null && widget.expandDropdownIconExpanded == null)
+      return widget.expandDropdownIcon!;
+    return const SizedBox();
   }
 
   OverlayEntry _createOverlayEntry(BuildContext widgetContext, FormFieldState<T> field) {
