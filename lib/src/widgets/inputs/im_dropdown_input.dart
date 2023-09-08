@@ -29,6 +29,7 @@ class ImDropdownInput<T> extends StatefulWidget {
     this.dropdownColor,
     this.titleStyle,
     this.subtitleStyle,
+    this.requiredTextError,
     this.tileHoverColor,
     this.dropdownBorderRadius,
     this.showDropdownShadow = false,
@@ -60,6 +61,7 @@ class ImDropdownInput<T> extends StatefulWidget {
   final double inputHeight;
   final double finalHeight;
   final EdgeInsets contentPadding;
+  final String? requiredTextError;
   final Color? tileHoverColor;
   final BorderRadius? dropdownBorderRadius;
   final Widget? expandDropdownIconExpanded;
@@ -102,7 +104,11 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
         key: widget.formFieldKey,
         validator: (T? value) {
           if (widget.isRequired && (value == null || value == false)) {
-            return 'Field is required';
+            if (widget.requiredTextError == null) {
+              return 'Required field';
+            } else {
+              return widget.requiredTextError;
+            }
           }
 
           if (widget.validator != null) {
