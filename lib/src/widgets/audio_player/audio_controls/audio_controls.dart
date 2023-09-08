@@ -16,11 +16,19 @@ class AudioControls extends StatefulWidget {
     required this.forward15SecondsIcon,
     required this.closeIcon,
     required this.isInitialPlaying,
+    this.on15secBackTap,
+    this.onPauseTap,
+    this.on15secBackBigTap,
+    this.on15secNextBigTap,
     this.isExpanded = false,
     this.circularProgressIndicatorColor,
   });
 
   final void Function() onCloseTap;
+  final void Function()? on15secBackTap;
+  final void Function()? onPauseTap;
+  final void Function()? on15secBackBigTap;
+  final void Function()? on15secNextBigTap;
   final bool isUserOnLessonDetailsScreen;
   final bool showLoadingWhileBuffering;
   final Color? circularProgressIndicatorColor;
@@ -143,7 +151,12 @@ class _AudioControlsState extends State<AudioControls> {
           ),
           onTap: () {
             final AudioControlsCubit cubit = context.read();
-
+            if (widget.isExpanded) {
+              widget.on15secBackBigTap?.call();
+            } else {
+              widget.on15secBackTap?.call();
+            }
+            
             cubit.backward15Sec();
           },
         ),
@@ -201,6 +214,8 @@ class _AudioControlsState extends State<AudioControls> {
       onTap: () {
         final AudioControlsCubit cubit = context.read();
 
+        widget.onPauseTap?.call();
+
         cubit.pause();
       },
       child: Center(
@@ -217,6 +232,9 @@ class _AudioControlsState extends State<AudioControls> {
     return GestureDetector(
       onTap: () {
         final AudioControlsCubit cubit = context.read();
+        if (widget.isExpanded) {
+          widget.on15secNextBigTap?.call();
+        }
 
         cubit.forward15Sec();
       },
