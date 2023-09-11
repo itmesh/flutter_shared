@@ -63,7 +63,7 @@ extension DateTimeExtensions<T extends DateTime> on T {
     12: 'grudzień',
   };
 
-    static const Map<int, String> longMonthNamesInEnglish = <int, String>{
+  static const Map<int, String> longMonthNamesInEnglish = <int, String>{
     1: 'January',
     2: 'February',
     3: 'March',
@@ -77,7 +77,20 @@ extension DateTimeExtensions<T extends DateTime> on T {
     11: 'November',
     12: 'December',
   };
-
+  static const Map<int, String> shortMonthNamesInEnglish = <int, String>{
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sept',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec',
+  };
 
   bool get isLeap {
     if (year % 400 == 0) {
