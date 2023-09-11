@@ -155,7 +155,7 @@ class ImDateTimeInput extends StatelessWidget {
   }) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: 12.0,
+        top: 4.0,
         left: 12.0,
       ),
       child: Text(
@@ -298,9 +298,21 @@ class ImDateTimeInput extends StatelessWidget {
               hintStyle: hintStyle,
               labelStyle: labelStyle,
               floatingLabelStyle: floatingLabelStyle,
-              enabledBorder: enabledBorder,
+              enabledBorder: field.hasError
+                  ? enabledBorder?.copyWith(
+                      borderSide: const BorderSide(
+                        color: Color(0xffF14564),
+                      ),
+                    )
+                  : enabledBorder,
               focusedBorder: focusedBorder,
-              border: border,
+              border: field.hasError
+                  ? border?.copyWith(
+                      borderSide: const BorderSide(
+                        color: Color(0xffF14564),
+                      ),
+                    )
+                  : border,
               labelText: labelText,
             ),
           ),

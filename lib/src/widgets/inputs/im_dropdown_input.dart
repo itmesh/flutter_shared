@@ -175,14 +175,7 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
             left: 12.0,
             top: 2.0,
           ),
-          child: Text(
-            widget.label,
-            style: (_isOpen && widget.dropdownExpandedColorStyle != null)
-                ? widget.labelStyle.copyWith(
-                    color: widget.dropdownExpandedColorStyle,
-                  )
-                : widget.labelStyle,
-          ),
+          child: Text(widget.label, style: _getLabelTextStyle(field)),
         ),
       ],
     );
@@ -191,9 +184,7 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
   Widget _buildDropDown(FormFieldState<T> field) {
     return Container(
       height: widget.inputHeight,
-      decoration: (_isOpen && widget.dropdownExpandedColorStyle != null)
-          ? widget.dropdownDecoration?.copyWith(border: Border.all(color: widget.dropdownExpandedColorStyle!))
-          : widget.dropdownDecoration,
+      decoration: _getDropdownDecoration(field),
       child: CompositedTransformTarget(
         link: this._layerLink,
         child: Padding(
@@ -372,6 +363,37 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
       return e.toString();
     }
     return widget.translateItemtoSubtitle!(e);
+  }
+
+  TextStyle _getLabelTextStyle(FormFieldState<T> field) {
+    if (_isOpen && widget.dropdownExpandedColorStyle != null)
+      return widget.labelStyle.copyWith(
+        color: widget.dropdownExpandedColorStyle,
+      );
+    if (field.hasError) {
+      return widget.labelStyle.copyWith(
+        color: const Color(0xffF14564),
+      );
+    }
+
+    return widget.labelStyle;
+  }
+
+  BoxDecoration? _getDropdownDecoration(FormFieldState<T> field) {
+    if (_isOpen && widget.dropdownExpandedColorStyle != null) {
+      return widget.dropdownDecoration?.copyWith(
+        border: Border.all(color: widget.dropdownExpandedColorStyle!),
+      );
+    }
+    if (field.hasError) {
+      return widget.dropdownDecoration?.copyWith(
+        border: Border.all(
+          color: const Color(0xffF14564),
+        ),
+      );
+    }
+
+    return widget.dropdownDecoration;
   }
 
   void _itemChange(T itemValue, FormFieldState<T> field) {
