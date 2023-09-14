@@ -31,13 +31,8 @@ abstract class DataManager<T, P> {
     bool forceFetching = true,
     bool showErrorToast = true,
   }) async {
-    try {
-      _data.add(await fetch(params));
-
-      return true;
-    } catch (e) {
-      return false;
-    }
+    _data.add(await fetch(params));
+    return true;
   }
 
   DateTime? lastFetchingDate;
@@ -46,7 +41,14 @@ abstract class DataManager<T, P> {
     functionsWithFetchingTime = givenFunctionsWithFetchingTime;
   }
 
-  bool validateCacheTime(String functionName) {
+  bool validateCacheTime(
+    String functionName, {
+    bool forceFetch = false,
+  }) {
+    if (forceFetch) {
+      lastFetchingDate = DateTime.now();
+      return true;
+    }
     if (functionsWithFetchingTime[functionName] == null) {
       return true;
     }
