@@ -27,6 +27,12 @@ class ImAudioPlayer extends StatefulWidget {
     this.on15secBackTap,
     this.onPauseTap,
     this.positionTextStyle,
+    this.onBigGreenPlayTap,
+    this.onBigPausePlayerTap,
+    this.onBigPlayTap,
+    this.onGreenPlayTap,
+    this.onOpenBigPlayerTap,
+    this.onPlayTap,
     required this.playIcon,
     required this.backward15Seconds,
     required this.continueIcon,
@@ -46,6 +52,13 @@ class ImAudioPlayer extends StatefulWidget {
   final void Function()? onPauseTap;
   final void Function()? on15secBackBigTap;
   final void Function()? on15secNextBigTap;
+  final void Function()? onGreenPlayTap;
+  final void Function()? onPlayTap;
+  final void Function()? onOpenBigPlayerTap;
+  final void Function()? onBigPlayTap;
+  final void Function()? onBigGreenPlayTap;
+  final void Function()? onBigPausePlayerTap;
+
   final bool showLoadingWhileBuffering;
   final Color? baseBarColor;
   final Color? bufferedBarColor;
@@ -150,8 +163,10 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
                       forward15SecondsIcon: widget.forward15SecondsIcon,
                       on15secBackTap: widget.on15secBackTap,
                       on15secNextBigTap: widget.on15secNextBigTap,
-                      onPauseTap: widget.onPauseTap,
+                      onPauseTap: widget.onBigPausePlayerTap,
                       on15secBackBigTap: widget.on15secBackBigTap,
+                      onGreenPlayTap: widget.onBigGreenPlayTap,
+                      onPlayTap: widget.onBigPlayTap,
                     ),
                   ),
                 ),
@@ -212,6 +227,8 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
                       on15secNextBigTap: widget.on15secNextBigTap,
                       onPauseTap: widget.onPauseTap,
                       on15secBackBigTap: widget.on15secBackBigTap,
+                      onGreenPlayTap: widget.onGreenPlayTap,
+                      onPlayTap: widget.onPlayTap,
                     ),
                   ],
                 ),
@@ -335,7 +352,9 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
   void _onTap() {
     if (widget.allowToChangeExpand) {
       _isExpanded = !_isExpanded;
-
+      if (_isExpanded) {
+        widget.onOpenBigPlayerTap?.call();
+      }
       setState(() {});
 
       return;
