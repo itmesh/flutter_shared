@@ -16,6 +16,7 @@ class ImAudioPlayer extends StatefulWidget {
     required this.initialExpanded,
     required this.showLoadingWhileBuffering,
     this.onWidgetTapIfCantExpand,
+    this.expandPlayerController,
     this.baseBarColor,
     this.bufferedBarColor,
     this.progressBarColor,
@@ -48,6 +49,7 @@ class ImAudioPlayer extends StatefulWidget {
   final bool initialExpanded;
   final void Function() onCloseTap;
   final void Function()? onWidgetTapIfCantExpand;
+  final ExpandPlayerController? expandPlayerController;
   final void Function()? on15secBackTap;
   final void Function()? onPauseTap;
   final void Function()? on15secBackBigTap;
@@ -352,6 +354,7 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
   void _onTap() {
     if (widget.allowToChangeExpand) {
       _isExpanded = !_isExpanded;
+      widget.expandPlayerController?.toggleExpandPlayer(_isExpanded);
       if (_isExpanded) {
         widget.onOpenBigPlayerTap?.call();
       }
