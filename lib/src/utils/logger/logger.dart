@@ -65,7 +65,7 @@ class Logger {
 
   void routeChange(String message) {
     _loggerInstance.log(
-      level: LoggerLevel.info,
+      level: LoggerLevel.error,
       message: chalk.green('🚦 $message'),
       tag: className,
       error: null,
