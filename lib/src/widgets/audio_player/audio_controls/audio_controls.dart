@@ -21,7 +21,6 @@ class AudioControls extends StatefulWidget {
     this.on15secBackBigTap,
     this.on15secNextBigTap,
     this.onGreenPlayTap,
-    this.onPlayAudioTap,
     this.onPlayTap,
     this.isExpanded = false,
     this.circularProgressIndicatorColor,
@@ -34,7 +33,6 @@ class AudioControls extends StatefulWidget {
   final void Function()? on15secNextBigTap;
   final void Function()? onGreenPlayTap;
   final void Function()? onPlayTap;
-  final void Function()? onPlayAudioTap;
   final bool isUserOnLessonDetailsScreen;
   final bool showLoadingWhileBuffering;
   final Color? circularProgressIndicatorColor;
