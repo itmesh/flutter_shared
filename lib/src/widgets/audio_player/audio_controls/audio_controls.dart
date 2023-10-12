@@ -20,6 +20,8 @@ class AudioControls extends StatefulWidget {
     this.onPauseTap,
     this.on15secBackBigTap,
     this.on15secNextBigTap,
+    this.onGreenPlayTap,
+    this.onPlayTap,
     this.isExpanded = false,
     this.circularProgressIndicatorColor,
   });
@@ -29,6 +31,8 @@ class AudioControls extends StatefulWidget {
   final void Function()? onPauseTap;
   final void Function()? on15secBackBigTap;
   final void Function()? on15secNextBigTap;
+  final void Function()? onGreenPlayTap;
+  final void Function()? onPlayTap;
   final bool isUserOnLessonDetailsScreen;
   final bool showLoadingWhileBuffering;
   final Color? circularProgressIndicatorColor;
@@ -123,6 +127,8 @@ class _AudioControlsState extends State<AudioControls> {
           setState(() {});
         }
 
+        widget.onGreenPlayTap?.call();
+
         final AudioControlsCubit cubit = context.read();
 
         cubit.play();
@@ -156,7 +162,7 @@ class _AudioControlsState extends State<AudioControls> {
             } else {
               widget.on15secBackTap?.call();
             }
-            
+
             cubit.backward15Sec();
           },
         ),
@@ -197,6 +203,8 @@ class _AudioControlsState extends State<AudioControls> {
       return GestureDetector(
         onTap: () {
           final AudioControlsCubit cubit = context.read();
+
+          widget.onPlayTap?.call();
 
           cubit.play();
         },
