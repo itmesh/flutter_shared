@@ -92,6 +92,13 @@ class _ImAudioPlayerState extends State<ImAudioPlayer> {
   }
 
   @override
+  void didUpdateWidget(covariant ImAudioPlayer oldWidget) {
+    _isExpanded = widget.initialExpanded;
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (_isExpanded) {
       return GestureDetector(
