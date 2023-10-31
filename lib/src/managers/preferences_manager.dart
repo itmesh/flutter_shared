@@ -50,7 +50,7 @@ class PreferencesManager {
   }
 
   Future<bool?> getBool(String key) async {
-    return await _sharedPreferences.getBool(key);
+    return _sharedPreferences.getBool(key);
   }
 
   Future<bool> setBool(String key, bool value) async {

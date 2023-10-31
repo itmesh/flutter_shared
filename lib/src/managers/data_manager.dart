@@ -3,26 +3,26 @@ import 'package:rxdart/rxdart.dart';
 
 abstract class DataManager<T, P> {
   @protected
-  final BehaviorSubject<Map<String, T>> _data = BehaviorSubject<Map<String, T>>.seeded(<String, T>{});
+  final BehaviorSubject<Map<String, T>> data = BehaviorSubject<Map<String, T>>.seeded(<String, T>{});
 
   DateTime? lastFetchingAll;
 
   Map<String, DateTime> lastFetchingForId = <String, DateTime>{};
 
-  Stream<List<T>> get data$ => _data.stream.map((Map<String, T> data) => data.values.toList());
+  Stream<List<T>> get data$ => data.stream.map((Map<String, T> data) => data.values.toList());
 
-  Stream<Map<String, T>> get dataMap$ => _data.stream;
+  Stream<Map<String, T>> get dataMap$ => data.stream;
 
-  Stream<List<T>> dataForIds$(List<String> ids) => _data.stream.map((Map<String, T> data) => data.values.toList());
+  Stream<List<T>> dataForIds$(List<String> ids) => data.stream.map((Map<String, T> data) => data.values.toList());
 
-  Stream<T?> dataForId$(String id) => _data.stream.map((Map<String, T> data) => data[id]);
+  Stream<T?> dataForId$(String id) => data.stream.map((Map<String, T> data) => data[id]);
 
-  List<T> get lastKnownValues => _data.value.values.toList();
+  List<T> get lastKnownValues => data.value.values.toList();
 
   List<T> lastKnownValuesForIds(List<String> ids) =>
-      _data.value.keys.where((String id) => ids.contains(id)).map((String id) => _data.value[id]!).toList();
+      data.value.keys.where((String id) => ids.contains(id)).map((String id) => data.value[id]!).toList();
 
-  T? lastKnownValueForId(String id) => _data.value[id];
+  T? lastKnownValueForId(String id) => data.value[id];
 
   Map<String, Duration> functionsWithFetchingTime = <String, Duration>{};
 
@@ -31,7 +31,7 @@ abstract class DataManager<T, P> {
     bool forceFetching = true,
     bool showErrorToast = true,
   }) async {
-    _data.add(await fetch(params));
+    data.add(await fetch(params));
     return true;
   }
 
@@ -74,7 +74,7 @@ abstract class DataManager<T, P> {
   /// For example when you delete something and fetch again data, value still exists in map so we need to delete
   /// it first if we update stream with using current value.
   void updateStreamWith(Map<String, T?> updatedData, {bool Function(T item)? deleteWhere}) {
-    final Map<String, T> currentValues = _data.value;
+    final Map<String, T> currentValues = data.value;
     if (deleteWhere != null) {
       currentValues.removeWhere((_, T value) => deleteWhere(value));
     }
@@ -89,12 +89,12 @@ abstract class DataManager<T, P> {
       }
     }
 
-    _data.add(currentValues);
+    data.add(currentValues);
   }
 
   void clearData() {
     final Map<String, T> clearData = <String, T>{};
-    _data.add(clearData);
+    data.add(clearData);
     lastFetchingDate = null;
   }
 
