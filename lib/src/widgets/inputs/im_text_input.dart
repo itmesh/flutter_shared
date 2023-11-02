@@ -40,6 +40,7 @@ class ImTextInput extends StatefulWidget {
     this.textAlignVertial,
     this.hoverColor,
     this.requiredTextError,
+    this.autofocus = false,
   });
 
   final String? labelText;
@@ -78,6 +79,7 @@ class ImTextInput extends StatefulWidget {
   final EdgeInsets contentPadding;
   final TextAlignVertical? textAlignVertial;
   final String? requiredTextError;
+  final bool autofocus;
 
   @override
   State<ImTextInput> createState() => _ImTextInputState();
@@ -98,6 +100,7 @@ class _ImTextInputState extends State<ImTextInput> {
       child: TextFormField(
         textAlignVertical: widget.textAlignVertial,
         style: widget.textStyle,
+        autofocus: widget.autofocus,
         autofillHints: widget.autofillHints,
         keyboardType: TextInputType.multiline,
         initialValue: widget.initialValue,
