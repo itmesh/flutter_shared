@@ -40,7 +40,7 @@ class ImAudioInput extends StatefulWidget {
   final audio.AudioPlayer? audioPlayer;
   final Stream<PositionData>? positionDataStream;
   final void Function() closeAudio;
-  final Future<void> Function(AudioInputData audioInputData, String title) playAudio;
+  final Future<void> Function(AudioInputData audioInputData, String title, String? imageUrl) playAudio;
   final GlobalKey<FormFieldState<AudioInputData>> formFieldKey;
   final FormFieldValidator<AudioInputData>? validator;
   final bool isRequired;
@@ -167,7 +167,7 @@ class ImAudioInputState extends State<ImAudioInput> {
       );
     }
 
-    widget.playAudio(_selectedValue!, 'Selected audio file');
+    widget.playAudio(_selectedValue!, 'Selected audio file', null);
 
     if (widget.audioPlayer != null && widget.positionDataStream != null) {
       return ImAudioPlayer(

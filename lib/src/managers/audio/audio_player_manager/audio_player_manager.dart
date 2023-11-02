@@ -53,6 +53,7 @@ class AudioPlayerManager {
     required AudioInputData audioInputData,
     required String title,
     required Duration initialPosition,
+    required String? imageUrl,
   }) async {
     if (audioInputData.imageUrl != null) {
       final Uri? uri = Uri.tryParse(audioInputData.imageUrl!);
@@ -63,6 +64,7 @@ class AudioPlayerManager {
             tag: MediaItem(
               id: uri.toString(),
               title: title,
+              artUri: imageUrl != null ? Uri.tryParse(imageUrl) : null,
             ),
           ),
           initialPosition: initialPosition,
@@ -85,6 +87,7 @@ class AudioPlayerManager {
     _audioMetadataManager.setMetadata(
       AudioMetadata(
         title: title,
+        imageUrl: imageUrl,
       ),
     );
   }
