@@ -41,6 +41,7 @@ class ImTextInput extends StatefulWidget {
     this.hoverColor,
     this.requiredTextError,
     this.autofocus = false,
+    this.textCapalization = TextCapitalization.none,
   });
 
   final String? labelText;
@@ -80,6 +81,7 @@ class ImTextInput extends StatefulWidget {
   final TextAlignVertical? textAlignVertial;
   final String? requiredTextError;
   final bool autofocus;
+  final TextCapitalization textCapalization;
 
   @override
   State<ImTextInput> createState() => _ImTextInputState();
@@ -101,6 +103,7 @@ class _ImTextInputState extends State<ImTextInput> {
         textAlignVertical: widget.textAlignVertial,
         style: widget.textStyle,
         autofocus: widget.autofocus,
+        textCapitalization: widget.textCapalization,
         autofillHints: widget.autofillHints,
         keyboardType: TextInputType.multiline,
         initialValue: widget.initialValue,
