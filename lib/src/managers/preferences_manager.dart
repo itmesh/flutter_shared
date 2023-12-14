@@ -60,4 +60,8 @@ class PreferencesManager {
   Future<bool> remove(String key) async {
     return await _sharedPreferences.remove(key);
   }
+
+  Future<bool> cleanAllPref() async {
+    return await _sharedPreferences.clear();
+  }
 }
