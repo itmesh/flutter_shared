@@ -95,6 +95,13 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: widget.finalHeight,
