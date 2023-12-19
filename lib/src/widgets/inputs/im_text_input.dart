@@ -5,7 +5,7 @@ class ImTextInput extends StatefulWidget {
   const ImTextInput({
     super.key,
     required this.contentPadding,
-    required this.fixedHeight,
+    required this.finalHeight,
     this.labelText,
     this.hintText,
     this.formFieldKey,
@@ -77,7 +77,7 @@ class ImTextInput extends StatefulWidget {
   final TextStyle? hintStyle;
   final TextStyle? labelStyle;
   final TextStyle? floatingLabelStyle;
-  final double fixedHeight;
+  final double finalHeight;
   final double? extendedHeight;
   final EdgeInsets contentPadding;
   final TextAlignVertical? textAlignVertial;
@@ -101,8 +101,8 @@ class _ImTextInputState extends State<ImTextInput> {
   Widget _buildContent() {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: widget.fixedHeight,
-        maxHeight: widget.extendedHeight ?? widget.fixedHeight,
+        minHeight: widget.finalHeight,
+        maxHeight: widget.extendedHeight ?? widget.finalHeight,
       ),
       child: TextFormField(
         textAlignVertical: widget.textAlignVertial,
