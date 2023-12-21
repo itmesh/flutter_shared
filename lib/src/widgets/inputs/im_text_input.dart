@@ -41,6 +41,7 @@ class ImTextInput extends StatefulWidget {
     this.hoverColor,
     this.requiredTextError,
     this.autofocus = false,
+    this.extendedHeight,
     this.textCapalization = TextCapitalization.none,
   });
 
@@ -77,6 +78,7 @@ class ImTextInput extends StatefulWidget {
   final TextStyle? labelStyle;
   final TextStyle? floatingLabelStyle;
   final double finalHeight;
+  final double? extendedHeight;
   final EdgeInsets contentPadding;
   final TextAlignVertical? textAlignVertial;
   final String? requiredTextError;
@@ -97,8 +99,11 @@ class _ImTextInputState extends State<ImTextInput> {
   }
 
   Widget _buildContent() {
-    return SizedBox(
-      height: widget.finalHeight,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: widget.finalHeight,
+        maxHeight: widget.extendedHeight ?? widget.finalHeight,
+      ),
       child: TextFormField(
         textAlignVertical: widget.textAlignVertial,
         style: widget.textStyle,

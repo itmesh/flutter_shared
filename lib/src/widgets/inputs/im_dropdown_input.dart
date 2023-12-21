@@ -110,6 +110,10 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: widget.formFieldKey,
         validator: (T? value) {
+          if (widget.validator != null) {
+            return widget.validator!(value);
+          }
+
           if (widget.isRequired && (value == null || value == false)) {
             if (widget.requiredTextError == null) {
               return 'Required field';
@@ -117,11 +121,6 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
               return widget.requiredTextError;
             }
           }
-
-          if (widget.validator != null) {
-            return widget.validator!(value);
-          }
-
           return null;
         },
         initialValue: widget.initialValue,
