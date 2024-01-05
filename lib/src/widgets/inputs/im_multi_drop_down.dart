@@ -224,7 +224,10 @@ class ImMultiDropdownState<T> extends State<ImMultiDropdown<T>> with TickerProvi
                             .map((T item) => CheckboxListTile(
                                   key: ValueKey<T>(item),
                                   value: _selectedItems.contains(item),
-                                  title: Text(_getName(item)),
+                                  title: Text(
+                                    _getName(item),
+                                    style: widget.textStyle,
+                                  ),
                                   controlAffinity: ListTileControlAffinity.leading,
                                   onChanged: (bool? isChecked) {
                                     _itemChange(item, isChecked!);
