@@ -3,12 +3,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:itmesh_flutter_shared/flutter_shared.dart';
+import 'package:itmesh_flutter_shared/src/_src.dart';
 import 'package:just_audio/just_audio.dart' as audio;
 
 class ImAudioInput extends StatefulWidget {
   const ImAudioInput({
     super.key,
-    this.initAudioInputData,
+    this.initUploadData,
     required this.audioPlayer,
     required this.positionDataStream,
     required this.closeAudio,
@@ -36,13 +37,13 @@ class ImAudioInput extends StatefulWidget {
     this.requiredTextError,
   });
 
-  final AudioInputData? initAudioInputData;
+  final UploadData? initUploadData;
   final audio.AudioPlayer? audioPlayer;
   final Stream<PositionData>? positionDataStream;
   final void Function() closeAudio;
-  final Future<void> Function(AudioInputData audioInputData, String title, String? imageUrl) playAudio;
-  final GlobalKey<FormFieldState<AudioInputData>> formFieldKey;
-  final FormFieldValidator<AudioInputData>? validator;
+  final Future<void> Function(UploadData audioInputData, String title, String? imageUrl) playAudio;
+  final GlobalKey<FormFieldState<UploadData>> formFieldKey;
+  final FormFieldValidator<UploadData>? validator;
   final bool isRequired;
   final Color? circularProgressIndicatorColor;
   final Widget playIcon;
@@ -70,10 +71,10 @@ class ImAudioInput extends StatefulWidget {
 class ImAudioInputState extends State<ImAudioInput> {
   @override
   Widget build(BuildContext context) {
-    return FormField<AudioInputData>(
+    return FormField<UploadData>(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       key: widget.formFieldKey,
-      validator: (AudioInputData? value) {
+      validator: (UploadData? value) {
         if (widget.isRequired && value == null) {
           if (widget.requiredTextError == null) {
             return 'This field is required';
@@ -88,8 +89,8 @@ class ImAudioInputState extends State<ImAudioInput> {
 
         return null;
       },
-      initialValue: widget.initAudioInputData,
-      builder: (FormFieldState<AudioInputData> field) => Column(
+      initialValue: widget.initUploadData,
+      builder: (FormFieldState<UploadData> field) => Column(
         children: <Widget>[
           Text(
             'Select Audio File',
@@ -113,9 +114,9 @@ class ImAudioInputState extends State<ImAudioInput> {
                 }
 
                 widget.formFieldKey.currentState?.didChange(
-                  AudioInputData(
-                    imageBytes: fileBytes,
-                    imageFile: XFile.fromData(fileBytes),
+                  UploadData(
+                    bytes: fileBytes,
+                    file: XFile.fromData(fileBytes),
                   ),
                 );
 
@@ -125,9 +126,9 @@ class ImAudioInputState extends State<ImAudioInput> {
               }
 
               widget.formFieldKey.currentState?.didChange(
-                AudioInputData(
-                  imageUrl: result.files.first.path,
-                  imageFile: XFile(result.files.first.path ?? ''),
+                UploadData(
+                  url: result.files.first.path,
+                  file: XFile(result.files.first.path ?? ''),
                 ),
               );
 
@@ -142,7 +143,7 @@ class ImAudioInputState extends State<ImAudioInput> {
     );
   }
 
-  Widget _buildErrorLine(FormFieldState<AudioInputData> field) {
+  Widget _buildErrorLine(FormFieldState<UploadData> field) {
     if (field.hasError) {
       return Padding(
         padding: const EdgeInsets.only(
@@ -158,9 +159,9 @@ class ImAudioInputState extends State<ImAudioInput> {
     return const SizedBox(height: 16.0);
   }
 
-  Widget _buildAudioInfo(FormFieldState<AudioInputData> field) {
+  Widget _buildAudioInfo(FormFieldState<UploadData> field) {
     if (_selectedValue == null ||
-        (_selectedValue?.imageBytes == null && _selectedValue?.imageUrl == null && _selectedValue?.imageFile == null)) {
+        (_selectedValue?.bytes == null && _selectedValue?.url == null && _selectedValue?.file == null)) {
       return Text(
         'No file selected',
         style: widget.infoStyle,
@@ -197,21 +198,13 @@ class ImAudioInputState extends State<ImAudioInput> {
         positionTextStyle: widget.positionTextStyle,
       );
     } else {
-      return const SizedBox();
+      return Container(
+        width: 100,
+        height: 100,
+        color: Colors.green,
+      );
     }
   }
 
-  AudioInputData? get _selectedValue => widget.formFieldKey.currentState?.value;
-}
-
-class AudioInputData {
-  const AudioInputData({
-    this.imageUrl,
-    this.imageFile,
-    this.imageBytes,
-  });
-
-  final String? imageUrl;
-  final XFile? imageFile;
-  final Uint8List? imageBytes;
+  UploadData? get _selectedValue => widget.formFieldKey.currentState?.value;
 }

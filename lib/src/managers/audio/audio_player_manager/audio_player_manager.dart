@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:itmesh_flutter_shared/flutter_shared.dart';
+import 'package:itmesh_flutter_shared/src/_src.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:rxdart/rxdart.dart';
@@ -50,13 +51,13 @@ class AudioPlayerManager {
   }
 
   Future<void> setAudioSource({
-    required AudioInputData audioInputData,
+    required UploadData uploadData,
     required String title,
     required Duration initialPosition,
     required String? imageUrl,
   }) async {
-    if (audioInputData.imageUrl != null) {
-      final Uri? uri = Uri.tryParse(audioInputData.imageUrl!);
+    if (uploadData.url != null) {
+      final Uri? uri = Uri.tryParse(uploadData.url!);
       if (uri != null) {
         await _audioPlayer.setAudioSource(
           AudioSource.uri(
@@ -72,10 +73,10 @@ class AudioPlayerManager {
       }
     }
 
-    if (audioInputData.imageBytes != null) {
+    if (uploadData.bytes != null) {
       await _audioPlayer.setAudioSource(
         BufferAudioSource(
-          buffer: audioInputData.imageBytes!,
+          buffer: uploadData.bytes!,
           title: title,
         ),
         initialPosition: initialPosition,

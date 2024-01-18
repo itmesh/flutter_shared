@@ -5,8 +5,6 @@ import 'package:itmesh_flutter_shared/flutter_shared.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '_logger.dart';
-
 class LoggerInstance {
   factory LoggerInstance() {
     return _instance ??= LoggerInstance._();

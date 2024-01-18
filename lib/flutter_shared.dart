@@ -5,3 +5,4 @@ export 'src/debouncer/_debouncer.dart';
 export 'src/managers/_managers.dart';
 export 'src/utils/_utils.dart';
 export 'src/widgets/_widgets.dart';
+export 'src/models/_models.dart';
