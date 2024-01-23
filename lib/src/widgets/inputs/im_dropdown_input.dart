@@ -187,7 +187,12 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
             left: 12.0,
             top: 2.0,
           ),
-          child: Text(widget.label, style: _getLabelTextStyle(field)),
+          child: Text(
+            widget.label,
+            style: _getLabelTextStyle(field),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     );
