@@ -424,12 +424,13 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
     if (_isOpen || close) {
       await _animationController.reverse();
       _overlayEntry.remove();
-
+      FSOverlayManager.remove(_overlayEntry);
       _isOpen = false;
       setState(() {});
     } else {
       _overlayEntry = _createOverlayEntry(widgetContext, field);
       Overlay.of(context).insert(_overlayEntry);
+      FSOverlayManager.add(_overlayEntry);
 
       _isOpen = true;
       setState(() {});
