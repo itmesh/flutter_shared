@@ -19,7 +19,6 @@ class ItmAnalyticsMixpanel {
 
   void aliasExistingUser(String userId) async {
     _mixpanel.alias(userId, await _mixpanel.getDistinctId());
-    _mixpanel.identify(userId);
   }
 
   void trackRoute(Route<dynamic> route) {
