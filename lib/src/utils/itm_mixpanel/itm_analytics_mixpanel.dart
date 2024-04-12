@@ -35,7 +35,10 @@ class ItmAnalyticsMixpanel {
     _mixpanel.registerSuperProperties(userProperties);
   }
 
-  void track(String event, Map<String, dynamic> properties) async {
+  void track({
+    required String event,
+    required Map<String, dynamic> properties,
+  }) async {
     _mixpanel.track(
       event,
       properties: properties,
