@@ -37,6 +37,7 @@ class ItmAnalyticsMixpanel {
   void clearSuperProperties() async {
     //SuperProperties will persist even if your application is taken completely out of memory.
     //to remove a superProperty, call unregisterSuperProperty() or clearSuperProperties()
+    //works only for mobile platforms
     _mixpanel.clearSuperProperties();
   }
 
