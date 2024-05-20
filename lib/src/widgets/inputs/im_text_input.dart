@@ -43,6 +43,7 @@ class ImTextInput extends StatefulWidget {
     this.autofocus = false,
     this.extendedHeight,
     this.textCapalization = TextCapitalization.none,
+    this.keyboardType = TextInputType.multiline,
   });
 
   final String? labelText;
@@ -84,6 +85,7 @@ class ImTextInput extends StatefulWidget {
   final String? requiredTextError;
   final bool autofocus;
   final TextCapitalization textCapalization;
+  final TextInputType keyboardType;
 
   @override
   State<ImTextInput> createState() => _ImTextInputState();
@@ -110,7 +112,7 @@ class _ImTextInputState extends State<ImTextInput> {
         autofocus: widget.autofocus,
         textCapitalization: widget.textCapalization,
         autofillHints: widget.autofillHints,
-        keyboardType: TextInputType.multiline,
+        keyboardType: widget.keyboardType,
         initialValue: widget.initialValue,
         minLines: widget.minLines ?? 1,
         maxLines: widget.maxLines,
