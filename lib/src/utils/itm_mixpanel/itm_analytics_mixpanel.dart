@@ -13,39 +13,39 @@ class ItmAnalyticsMixpanel {
 
   // endregion
 
-  void identifyUser(String userId) async {
-    _mixpanel.identify(userId);
+  Future<void> identifyUser(String userId) async {
+    await _mixpanel.identify(userId);
   }
 
-  void aliasExistingUser(String userId) async {
+  Future<void> aliasExistingUser(String userId) async {
     _mixpanel.alias(userId, await _mixpanel.getDistinctId());
   }
 
-  void trackRoute(Route<dynamic> route) {
-    _mixpanel.track(route.settings.name ?? 'Unnamed route');
+  Future<void> trackRoute(Route<dynamic> route) async {
+    await _mixpanel.track(route.settings.name ?? 'Unnamed route');
   }
 
-  void registerSuperProperties(Map<String, dynamic> superProperties) async {
-    _mixpanel.registerSuperProperties(superProperties);
+  Future<void> registerSuperProperties(Map<String, dynamic> superProperties) async {
+    await _mixpanel.registerSuperProperties(superProperties);
   }
 
-  void registerUserProperties(Map<String, dynamic> userProperties) async {
+  Future<void> registerUserProperties(Map<String, dynamic> userProperties) async {
     // Mixpanel does not distinguish between super and user properties.
-    _mixpanel.registerSuperProperties(userProperties);
+    await _mixpanel.registerSuperProperties(userProperties);
   }
 
-  void clearSuperProperties() async {
+  Future<void> clearSuperProperties() async {
     //SuperProperties will persist even if your application is taken completely out of memory.
     //to remove a superProperty, call unregisterSuperProperty() or clearSuperProperties()
     //works only for mobile platforms
-    _mixpanel.clearSuperProperties();
+    await _mixpanel.clearSuperProperties();
   }
 
-  void track({
+  Future<void> track({
     required String event,
     required Map<String, dynamic> properties,
   }) async {
-    _mixpanel.track(
+    await _mixpanel.track(
       event,
       properties: properties,
     );
