@@ -2,3 +2,7 @@
 .dart_tool
 .flutter-plugins-dependencies 
 .flutter-plugins
+.idea/flutter_shared.iml
+.idea/libraries/Dart_Packages.xml
+.idea/misc.xml
+.idea/workspace.xml
