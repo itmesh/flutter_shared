@@ -116,7 +116,7 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
 
           if (widget.isRequired && (value == null || value == false)) {
             if (widget.requiredTextError == null) {
-              return 'Required field';
+              return 'Pole jest wymagane';
             } else {
               return widget.requiredTextError;
             }

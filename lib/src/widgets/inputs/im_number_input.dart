@@ -139,7 +139,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           validator: (String? value) {
             if (widget.required && (value == null || value.isEmpty)) {
               if (widget.requiredTextError == null) {
-                return 'Field is required';
+                return 'Pole jest wymagane';
               } else {
                 return widget.requiredTextError;
               }
