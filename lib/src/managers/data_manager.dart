@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -31,7 +33,16 @@ abstract class DataManager<T, P> {
     bool forceFetching = true,
     bool showErrorToast = true,
   }) async {
-    data.add(await fetch(params));
+    final Future<Map<String, T>> fetchedDataFuture = fetch(params);
+
+    final cachedData = await fetchCached(params);
+    if (cachedData == null) {
+      data.add(await fetchedDataFuture);
+    } else {
+      data.add(cachedData);
+      final fetchedData = await fetchedDataFuture;
+      updateStreamWith(fetchedData);
+    }
     return true;
   }
 
@@ -100,4 +111,6 @@ abstract class DataManager<T, P> {
 
   @protected
   Future<Map<String, T>> fetch(P params);
+
+  Future<Map<String, T>?> fetchCached(P params) async => null;
 }
