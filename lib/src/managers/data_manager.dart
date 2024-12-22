@@ -9,6 +9,8 @@ import 'package:hive/hive.dart';
 abstract class DataManager<T, P> {
   Box? _box;
 
+  bool _isCurrentlyCaching = false;
+
   @protected
   final BehaviorSubject<Map<String, T>> data = BehaviorSubject<Map<String, T>>.seeded(<String, T>{});
 
@@ -116,11 +118,11 @@ abstract class DataManager<T, P> {
     }
 
     final String boxName = T.toString();
-    print('INITIALIZE CACHE! ${boxName}');
+    // print('INITIALIZE CACHE! ${boxName}');
 
     _box = await _openHiveBox(boxName);
     String? collectionData = _box?.get(boxName, defaultValue: '');
-    print('INITIALIZE CACHE! ${boxName} Data ${collectionData} hallo ${_box != null}');
+    // print('INITIALIZE CACHE! ${boxName} Data ${collectionData} hallo ${_box != null}');
 
     data.listen(
       (value) {
@@ -143,8 +145,14 @@ abstract class DataManager<T, P> {
         cachedData[key] = fromJsonCache(jsonData);
       },
     );
-
+    print('Updating stream with data coll ${T.toString()} data len: ${cachedData.length}');
     updateStreamWith(cachedData);
+  }
+
+  void clearCache() {
+    if (_box != null) {
+      _box?.delete(T.toString());
+    }
   }
 
   Map<String, dynamic> toJsonCache(T object) {
@@ -156,19 +164,27 @@ abstract class DataManager<T, P> {
   }
 
   Future<void> _cacheData(Map<String, T> data) async {
-    final Map<String, dynamic> dataParsed = data.map(
-      (key, value) {
-        return MapEntry(key, toJsonCache(value));
-      },
-    );
+    if (_isCurrentlyCaching || data.isEmpty) {
+      return;
+    }
 
-    final String serializedData = await compute(_serializeData, dataParsed);
+    try {
+      final Map<String, dynamic> dataParsed = data.map(
+        (key, value) {
+          return MapEntry(key, toJsonCache(value));
+        },
+      );
+      _isCurrentlyCaching = true;
+      final String serializedData = await _serializeData(dataParsed); //  await compute(_serializeData, dataParsed);
 
-    print('Saving data... ${T.toString()} $serializedData');
-    await _box?.put(
-      T.toString(),
-      serializedData,
-    );
+      // print('Saving data... ${T.toString()} $serializedData');
+      await _box?.put(
+        T.toString(),
+        serializedData,
+      );
+    } finally {
+      _isCurrentlyCaching = false;
+    }
   }
 
   static Future<String> _serializeData(Map<String, dynamic> data) async {
