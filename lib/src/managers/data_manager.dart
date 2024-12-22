@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:hive/hive.dart';
 
 abstract class DataManager<T, P> {
+  Box? _box;
+
   @protected
   final BehaviorSubject<Map<String, T>> data = BehaviorSubject<Map<String, T>>.seeded(<String, T>{});
 
@@ -33,16 +38,7 @@ abstract class DataManager<T, P> {
     bool forceFetching = true,
     bool showErrorToast = true,
   }) async {
-    final Future<Map<String, T>> fetchedDataFuture = fetch(params);
-
-    final cachedData = await fetchCached(params);
-    if (cachedData == null) {
-      data.add(await fetchedDataFuture);
-    } else {
-      data.add(cachedData);
-      final fetchedData = await fetchedDataFuture;
-      updateStreamWith(fetchedData);
-    }
+    data.add(await fetch(params));
     return true;
   }
 
@@ -84,7 +80,10 @@ abstract class DataManager<T, P> {
   /// deleteWhere is using to delete old values which doesn't exists.
   /// For example when you delete something and fetch again data, value still exists in map so we need to delete
   /// it first if we update stream with using current value.
-  void updateStreamWith(Map<String, T?> updatedData, {bool Function(T item)? deleteWhere}) {
+  Future<void> updateStreamWith(
+    Map<String, T?> updatedData, {
+    bool Function(T item)? deleteWhere,
+  }) async {
     final Map<String, T> currentValues = data.value;
     if (deleteWhere != null) {
       currentValues.removeWhere((_, T value) => deleteWhere(value));
@@ -92,7 +91,6 @@ abstract class DataManager<T, P> {
 
     for (String id in updatedData.keys) {
       final T? data = updatedData[id];
-
       if (data == null) {
         currentValues.remove(id);
       } else {
@@ -112,5 +110,80 @@ abstract class DataManager<T, P> {
   @protected
   Future<Map<String, T>> fetch(P params);
 
-  Future<Map<String, T>?> fetchCached(P params) async => null;
+  Future<void> initializeCache() async {
+    if (kIsWeb) {
+      return;
+    }
+
+    final String boxName = T.toString();
+    print('INITIALIZE CACHE! ${boxName}');
+
+    _box = await _openHiveBox(boxName);
+    String? collectionData = _box?.get(boxName, defaultValue: '');
+    print('INITIALIZE CACHE! ${boxName} Data ${collectionData} hallo ${_box != null}');
+
+    data.listen(
+      (value) {
+        if (_box != null) {
+          _cacheData(value);
+        }
+      },
+    );
+
+    if (collectionData == null || collectionData.isEmpty) {
+      return;
+    }
+
+    final Map<String, T> cachedData = <String, T>{};
+    final Map<String, dynamic> decodedData = json.decode(collectionData) as Map<String, dynamic>;
+
+    decodedData.forEach(
+      (key, value) {
+        final jsonData = (value as Map<String, dynamic>)..['id'] = key;
+        cachedData[key] = fromJsonCache(jsonData);
+      },
+    );
+
+    updateStreamWith(cachedData);
+  }
+
+  Map<String, dynamic> toJsonCache(T object) {
+    throw UnimplementedError('Implement toJson from DataManager to cache data');
+  }
+
+  T fromJsonCache(Map<String, dynamic> json) {
+    throw UnimplementedError('Implement fromJson from DataManager to cache data');
+  }
+
+  Future<void> _cacheData(Map<String, T> data) async {
+    final Map<String, dynamic> dataParsed = data.map(
+      (key, value) {
+        return MapEntry(key, toJsonCache(value));
+      },
+    );
+
+    final String serializedData = await compute(_serializeData, dataParsed);
+
+    print('Saving data... ${T.toString()} $serializedData');
+    await _box?.put(
+      T.toString(),
+      serializedData,
+    );
+  }
+
+  static Future<String> _serializeData(Map<String, dynamic> data) async {
+    return json.encode(data);
+  }
+
+  Future<Box> _openHiveBox(String boxName) async {
+    if (!kIsWeb && !Hive.isBoxOpen(boxName)) {
+      String path = (await getApplicationDocumentsDirectory()).path;
+      Hive.init(path);
+    }
+    try {
+      return await Hive.openBox(boxName);
+    } catch (e) {
+      throw UnsupportedError('Ensure hive box exists');
+    }
+  }
 }
