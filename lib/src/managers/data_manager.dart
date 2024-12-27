@@ -118,11 +118,9 @@ abstract class DataManager<T, P> {
     }
 
     final String boxName = T.toString();
-    // print('INITIALIZE CACHE! ${boxName}');
 
     _box = await _openHiveBox(boxName);
     String? collectionData = _box?.get(boxName, defaultValue: '');
-    // print('INITIALIZE CACHE! ${boxName} Data ${collectionData} hallo ${_box != null}');
 
     data.listen(
       (value) {
@@ -145,7 +143,6 @@ abstract class DataManager<T, P> {
         cachedData[key] = fromJsonCache(jsonData);
       },
     );
-    print('Updating stream with data coll ${T.toString()} data len: ${cachedData.length}');
     updateStreamWith(cachedData);
   }
 
@@ -155,6 +152,8 @@ abstract class DataManager<T, P> {
     }
   }
 
+  // TODO(lukkam): When flutter allows extending constructors or static methods, move this methods to serializable interface with toJson and fromJson (T extends ISerializable)
+  //               https://github.com/dart-lang/language/issues/356 , We could do this now but we have to create object on that we call fromJson later.
   Map<String, dynamic> toJsonCache(T object) {
     throw UnimplementedError('Implement toJson from DataManager to cache data');
   }
@@ -175,9 +174,11 @@ abstract class DataManager<T, P> {
         },
       );
       _isCurrentlyCaching = true;
-      final String serializedData = await _serializeData(dataParsed); //  await compute(_serializeData, dataParsed);
+      final String serializedData = await _serializeData(dataParsed);
+      // TODO(lukkam): Consider moving serialization to Isolate if main thread is too busy.
+      //               for now dropping this idea cuz if we initialize a lot of managers in same time we create too much isolate threads. (maybe some Queue?)
+      // await compute(_serializeData, dataParsed);
 
-      // print('Saving data... ${T.toString()} $serializedData');
       await _box?.put(
         T.toString(),
         serializedData,
