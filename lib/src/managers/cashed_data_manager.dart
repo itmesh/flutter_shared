@@ -11,7 +11,6 @@ abstract class CachedDataManager<T, P> extends DataManager<T, P> {
   static const String _boxName = 'cache';
 
   Future<bool> init() async {
-    print('Initing $name');
     // Get hive box using name and read data.
     Box box = await _openHiveBox();
 
@@ -32,7 +31,6 @@ abstract class CachedDataManager<T, P> extends DataManager<T, P> {
     // Subscribe to stream, when data changes use toJson and _save to cache it.
     data.listen((Map<String, T> value) {
       String json = toJson(value);
-      print(json);
       _save(json);
     });
     return true;
