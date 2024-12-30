@@ -1,15 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:itmesh_flutter_shared/src/services/cache_service.dart';
+import 'package:itmesh_flutter_shared/src/services/hive_cache_service.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:hive/hive.dart';
 
 abstract class DataManager<T, P> {
-  Box? _box;
-
-  bool _isCurrentlyCaching = false;
+  CacheService<T>? _cacheService;
 
   @protected
   final BehaviorSubject<Map<String, T>> data = BehaviorSubject<Map<String, T>>.seeded(<String, T>{});
@@ -113,43 +110,30 @@ abstract class DataManager<T, P> {
   Future<Map<String, T>> fetch(P params);
 
   Future<void> initializeCache() async {
-    if (kIsWeb) {
-      return;
-    }
-
-    final String boxName = T.toString();
-
-    _box = await _openHiveBox(boxName);
-    String? collectionData = _box?.get(boxName, defaultValue: '');
+    final String cacheCollectionName = T.toString();
+    _cacheService = HiveCacheService<T>(
+      collectionName: cacheCollectionName,
+      fromJson: fromJsonCache,
+      toJson: toJsonCache,
+    );
+    await _cacheService?.init();
+    Map<String, T>? cachedData = _cacheService?.getCachedData();
 
     data.listen(
       (value) {
-        if (_box != null) {
-          _cacheData(value);
-        }
+        _cacheService?.cacheData(value);
       },
     );
 
-    if (collectionData == null || collectionData.isEmpty) {
+    if (cachedData == null) {
       return;
     }
 
-    final Map<String, T> cachedData = <String, T>{};
-    final Map<String, dynamic> decodedData = json.decode(collectionData) as Map<String, dynamic>;
-
-    decodedData.forEach(
-      (key, value) {
-        final jsonData = (value as Map<String, dynamic>)..['id'] = key;
-        cachedData[key] = fromJsonCache(jsonData);
-      },
-    );
     updateStreamWith(cachedData);
   }
 
   void clearCache() {
-    if (_box != null) {
-      _box?.delete(T.toString());
-    }
+    _cacheService?.clearCache();
   }
 
   // TODO(lukkam): When flutter allows extending constructors or static methods, move this methods to serializable interface with toJson and fromJson (T extends ISerializable)
@@ -160,47 +144,5 @@ abstract class DataManager<T, P> {
 
   T fromJsonCache(Map<String, dynamic> json) {
     throw UnimplementedError('Implement fromJson from DataManager to cache data');
-  }
-
-  Future<void> _cacheData(Map<String, T> data) async {
-    if (_isCurrentlyCaching || data.isEmpty) {
-      return;
-    }
-
-    try {
-      final Map<String, dynamic> dataParsed = data.map(
-        (key, value) {
-          return MapEntry(key, toJsonCache(value));
-        },
-      );
-      _isCurrentlyCaching = true;
-      final String serializedData = await _serializeData(dataParsed);
-      // TODO(lukkam): Consider moving serialization to Isolate if main thread is too busy.
-      //               for now dropping this idea cuz if we initialize a lot of managers in same time we create too much isolate threads. (maybe some Queue?)
-      // await compute(_serializeData, dataParsed);
-
-      await _box?.put(
-        T.toString(),
-        serializedData,
-      );
-    } finally {
-      _isCurrentlyCaching = false;
-    }
-  }
-
-  static Future<String> _serializeData(Map<String, dynamic> data) async {
-    return json.encode(data);
-  }
-
-  Future<Box> _openHiveBox(String boxName) async {
-    if (!kIsWeb && !Hive.isBoxOpen(boxName)) {
-      String path = (await getApplicationDocumentsDirectory()).path;
-      Hive.init(path);
-    }
-    try {
-      return await Hive.openBox(boxName);
-    } catch (e) {
-      throw UnsupportedError('Ensure hive box exists');
-    }
   }
 }
