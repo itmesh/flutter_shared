@@ -59,9 +59,23 @@ extension StringExtensions<T extends String> on T {
   }
 
   Size textSize(TextStyle style) {
-    final TextPainter textPainter =
-        TextPainter(text: TextSpan(text: this, style: style), maxLines: 1, textDirection: TextDirection.ltr)
-          ..layout(minWidth: 0, maxWidth: double.infinity);
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: this, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout(minWidth: 0, maxWidth: double.infinity);
     return textPainter.size;
+  }
+
+  String toCamelCase() {
+    final List<String> words = trim().split(' ');
+    return words.first.toLowerCase() +
+        words.skip(1).map(
+          (String singleWord) {
+            final String firstLetter = singleWord[0];
+            final String restOfWord = singleWord.substring(1);
+            return firstLetter.toUpperCase() + restOfWord.toLowerCase();
+          },
+        ).join('');
   }
 }
