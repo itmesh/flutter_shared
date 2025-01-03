@@ -68,7 +68,7 @@ extension StringExtensions<T extends String> on T {
   }
 
   String toCamelCase() {
-    final List<String> words = trim().split(' ');
+    final List<String> words = trim().split(RegExp(r'\s+'));
     return words.first.toLowerCase() +
         words.skip(1).map(
           (String singleWord) {
