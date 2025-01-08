@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:itmesh_flutter_shared/src/services/cache_service.dart';
 import 'package:path_provider/path_provider.dart';
@@ -51,11 +52,11 @@ class HiveCacheService<T> extends CacheService<T> {
   }
 
   Future<Box> _openHiveBox(String boxName) async {
-    if (!Hive.isBoxOpen(boxName)) {
-      String path = (await getApplicationDocumentsDirectory()).path;
-      Hive.init(path);
-    }
     try {
+      if (!Hive.isBoxOpen(boxName) && !kIsWeb) {
+        String path = (await getApplicationDocumentsDirectory()).path;
+        Hive.init(path);
+      }
       return await Hive.openBox(boxName);
     } catch (e) {
       throw UnsupportedError('Ensure hive box exists');
