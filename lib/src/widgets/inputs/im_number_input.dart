@@ -137,8 +137,12 @@ class _ImNumberInputState extends State<ImNumberInput> {
           onFieldSubmitted: (String value) => widget.onSubmit?.call(),
           textAlignVertical: widget.textAlignVertical,
           validator: (String? value) {
+            Locale currentLocale = Localizations.localeOf(context);
+
             if (widget.required && (value == null || value.isEmpty)) {
-              if (widget.requiredTextError == null) {
+              if (widget.requiredTextError == null && currentLocale.languageCode == 'pl') {
+                return 'Pole jest wymagane';
+              } else if (widget.requiredTextError == null && currentLocale.languageCode == 'en') {
                 return 'Field is required';
               } else {
                 return widget.requiredTextError;

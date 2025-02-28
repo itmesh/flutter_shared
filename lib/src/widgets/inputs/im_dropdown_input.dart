@@ -112,13 +112,17 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: widget.formFieldKey,
         validator: (T? value) {
+          Locale currentLocale = Localizations.localeOf(context);
+
           if (widget.validator != null) {
             return widget.validator!(value);
           }
 
           if (widget.isRequired && (value == null || value == false)) {
-            if (widget.requiredTextError == null) {
-              return 'Required field';
+            if (widget.requiredTextError == null && currentLocale.languageCode == 'pl') {
+              return 'Pole jest wymagane';
+            } else if (widget.requiredTextError == null && currentLocale.languageCode == 'en') {
+              return 'Field is required';
             } else {
               return widget.requiredTextError;
             }

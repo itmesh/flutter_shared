@@ -1,7 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:itmesh_flutter_shared/src/services/cache_service.dart';
+import 'package:itmesh_flutter_shared/src/services/hive_cache_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class DataManager<T, P> {
+  CacheService<T>? _cacheService;
+
   @protected
   final BehaviorSubject<Map<String, T>> data = BehaviorSubject<Map<String, T>>.seeded(<String, T>{});
 
@@ -73,7 +79,10 @@ abstract class DataManager<T, P> {
   /// deleteWhere is using to delete old values which doesn't exists.
   /// For example when you delete something and fetch again data, value still exists in map so we need to delete
   /// it first if we update stream with using current value.
-  void updateStreamWith(Map<String, T?> updatedData, {bool Function(T item)? deleteWhere}) {
+  Future<void> updateStreamWith(
+    Map<String, T?> updatedData, {
+    bool Function(T item)? deleteWhere,
+  }) async {
     final Map<String, T> currentValues = data.value;
     if (deleteWhere != null) {
       currentValues.removeWhere((_, T value) => deleteWhere(value));
@@ -81,7 +90,6 @@ abstract class DataManager<T, P> {
 
     for (String id in updatedData.keys) {
       final T? data = updatedData[id];
-
       if (data == null) {
         currentValues.remove(id);
       } else {
@@ -100,4 +108,41 @@ abstract class DataManager<T, P> {
 
   @protected
   Future<Map<String, T>> fetch(P params);
+
+  Future<void> initializeCache() async {
+    final String cacheCollectionName = T.toString();
+    _cacheService = HiveCacheService<T>(
+      collectionName: cacheCollectionName,
+      fromJson: fromJsonCache,
+      toJson: toJsonCache,
+    );
+    await _cacheService?.init();
+    Map<String, T>? cachedData = _cacheService?.getCachedData();
+
+    data.listen(
+      (value) {
+        _cacheService?.cacheData(value);
+      },
+    );
+
+    if (cachedData == null) {
+      return;
+    }
+
+    updateStreamWith(cachedData);
+  }
+
+  void clearCache() {
+    _cacheService?.clearCache();
+  }
+
+  // TODO(lukkam): When flutter allows extending constructors or static methods, move this methods to serializable interface with toJson and fromJson (T extends ISerializable)
+  //               https://github.com/dart-lang/language/issues/356 , We could do this now but we have to create object on that we call fromJson later.
+  Map<String, dynamic> toJsonCache(T object) {
+    throw UnimplementedError('Implement toJson from DataManager to cache data');
+  }
+
+  T fromJsonCache(Map<String, dynamic> json) {
+    throw UnimplementedError('Implement fromJson from DataManager to cache data');
+  }
 }
