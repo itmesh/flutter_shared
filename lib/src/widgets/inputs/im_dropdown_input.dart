@@ -35,10 +35,12 @@ class ImDropdownInput<T> extends StatefulWidget {
     this.showDropdownShadow = false,
     this.dropdownExpandedColorStyle,
     this.expandDropdownIconExpanded,
+    this.buildPrefixWidget,
   }) : super(key: key);
 
   final void Function(T? value)? onChanged;
   final String Function(T? element)? translateItemtoString;
+  final Widget Function(T? element)? buildPrefixWidget;
   final void Function(List<T> elements)? customSorting;
   final Set<T> values;
   final String label;
@@ -325,9 +327,14 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
                                       child: widget.translateItemtoSubtitle == null
                                           ? Align(
                                               alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                _getName(item),
-                                                style: widget.titleStyle,
+                                              child: Row(
+                                                children: [
+                                                  _getPrefix(item),
+                                                  Text(
+                                                    _getName(item),
+                                                    style: widget.titleStyle,
+                                                  ),
+                                                ],
                                               ),
                                             )
                                           : ListTile(
@@ -380,6 +387,13 @@ class ImDropdownInputState<T> extends State<ImDropdownInput<T>> with TickerProvi
       return e.toString();
     }
     return widget.translateItemtoSubtitle!(e);
+  }
+
+  Widget _getPrefix(T? e) {
+    if (widget.buildPrefixWidget == null) {
+      return SizedBox.shrink();
+    }
+    return widget.buildPrefixWidget!(e);
   }
 
   TextStyle _getLabelTextStyle(FormFieldState<T> field) {
