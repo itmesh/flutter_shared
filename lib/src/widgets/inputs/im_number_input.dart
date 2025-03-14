@@ -78,146 +78,190 @@ class ImNumberInput extends StatefulWidget {
   final double finalHeight;
   final EdgeInsets contentPadding;
   final String? requiredTextError;
-
   final TextAlignVertical? textAlignVertical;
+
   @override
   State<ImNumberInput> createState() => _ImNumberInputState();
 }
 
 class _ImNumberInputState extends State<ImNumberInput> {
+  late TextEditingController _controller;
+  late FocusNode _focusNode;
+  String? _errorText;
+  final GlobalKey<FormFieldState<String>> _formKey = GlobalKey<FormFieldState<String>>();
+
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: _buildContent(),
-    );
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController(text: widget.initialValue);
+    _focusNode = widget.focusNode ?? FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.required && (_controller.text.isEmpty)) {
+        _validateAndUpdateError(_controller.text);
+      }
+    });
   }
 
-  Widget _buildContent() {
-    return Row(
-      children: <Widget>[
-        _buildFormField(),
-        if (widget.suffixText != null)
-          Column(
+  @override
+  void dispose() {
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
+    if (widget.focusNode == null) {
+      _focusNode.dispose();
+    }
+    super.dispose();
+  }
+
+  void _validateAndUpdateError(String? value) {
+    setState(() {
+      _errorText = _getErrorText(value);
+    });
+  }
+
+  String? _getErrorText(String? value) {
+    Locale currentLocale = Localizations.localeOf(context);
+
+    if (widget.required && (value == null || value.isEmpty)) {
+      if (widget.requiredTextError == null && currentLocale.languageCode == 'pl') {
+        return 'Pole jest wymagane';
+      } else if (widget.requiredTextError == null && currentLocale.languageCode == 'en') {
+        return 'Field is required';
+      } else {
+        return widget.requiredTextError;
+      }
+    }
+
+    if (widget.validator != null) {
+      return widget.validator!(value);
+    }
+
+    return null;
+  }
+
+  void _clearInput() {
+    _controller.clear();
+    if (widget.onChanged != null) {
+      widget.onChanged!('');
+    }
+    _validateAndUpdateError('');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: widget.finalHeight,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                height: widget.inputHeight,
-                decoration: widget.suffixBoxDecoration,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      widget.suffixText!,
-                      style: widget.suffixTextStyle,
+              Expanded(
+                child: SizedBox(
+                  height: widget.inputHeight,
+                  child: TextFormField(
+                    style: widget.textStyle,
+                    keyboardType: TextInputType.number,
+                    minLines: widget.minLines ?? 1,
+                    maxLines: widget.maxLines ?? 1,
+                    autovalidateMode: AutovalidateMode.disabled, // We'll handle validation ourselves
+                    controller: _controller,
+                    enabled: widget.enabled,
+                    onFieldSubmitted: (String value) => widget.onSubmit?.call(),
+                    textAlignVertical: widget.textAlignVertical,
+                    validator: (String? value) {
+                      final error = _getErrorText(value);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        setState(() {
+                          _errorText = error;
+                        });
+                      });
+                      return error;
+                    },
+                    focusNode: _focusNode,
+                    onChanged: (String value) {
+                      if (widget.onChanged != null) {
+                        widget.onChanged!(value);
+                      }
+                      _validateAndUpdateError(value);
+                    },
+                    key: widget.formFieldKey ?? _formKey,
+                    obscureText: widget.obscureText,
+                    decoration: InputDecoration(
+                      hoverColor: widget.hoverColor,
+                      contentPadding: widget.contentPadding,
+                      errorStyle: const TextStyle(height: 0, color: Colors.transparent), // Hide the default error
+                      errorMaxLines: 1,
+                      focusColor: widget.focusColor,
+                      errorBorder: widget.errorBorder,
+                      focusedErrorBorder: widget.focusedErrorBorder,
+                      suffixIcon: widget.showDeleteIcon && _controller.text.isNotEmpty
+                          ? IconButton(
+                        onPressed: _clearInput,
+                        icon: Padding(
+                          padding: const EdgeInsets.only(
+                            right: 8.0,
+                            bottom: 8.0,
+                          ),
+                          child: SizedBox(
+                            height: 16.0,
+                            width: 16.0,
+                            child: widget.deleteIcon ?? const Icon(Icons.clear, size: 16),
+                          ),
+                        ),
+                      )
+                          : null,
+                      filled: true,
+                      fillColor: widget.fillColor,
+                      alignLabelWithHint: false,
+                      labelText: widget.labelText,
+                      hintStyle: widget.hintStyle,
+                      labelStyle: widget.labelStyle,
+                      floatingLabelStyle: widget.floatingLabelStyle,
+                      enabledBorder: widget.enabledBorder,
+                      focusedBorder: widget.focusedBorder,
+                      disabledBorder: widget.disabledBorder,
+                      border: widget.border,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 24.0),
-            ],
-          ),
-      ],
-    );
-  }
-
-  Widget _buildFormField() {
-    return Expanded(
-      child: SizedBox(
-        height: widget.finalHeight,
-        child: TextFormField(
-          style: widget.textStyle,
-          keyboardType: TextInputType.number,
-          initialValue: widget.initialValue,
-          minLines: widget.minLines ?? 1,
-          maxLines: widget.maxLines ?? 1,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          controller: widget.controller,
-          enabled: widget.enabled,
-          onFieldSubmitted: (String value) => widget.onSubmit?.call(),
-          textAlignVertical: widget.textAlignVertical,
-          validator: (String? value) {
-            Locale currentLocale = Localizations.localeOf(context);
-
-            if (widget.required && (value == null || value.isEmpty)) {
-              if (widget.requiredTextError == null && currentLocale.languageCode == 'pl') {
-                return 'Pole jest wymagane';
-              } else if (widget.requiredTextError == null && currentLocale.languageCode == 'en') {
-                return 'Field is required';
-              } else {
-                return widget.requiredTextError;
-              }
-            }
-
-            if (widget.validator != null) {
-              return widget.validator!(value);
-            }
-
-            return null;
-          },
-          focusNode: widget.focusNode,
-          onChanged: (String value) {
-            widget.onChanged?.call(value);
-
-            setState(() {});
-          },
-          key: widget.formFieldKey,
-          obscureText: widget.obscureText,
-          decoration: InputDecoration(
-            hoverColor: widget.hoverColor,
-            contentPadding: widget.contentPadding,
-            errorStyle: widget.errorStyle,
-            focusColor: widget.focusColor,
-            errorBorder: widget.errorBorder,
-            focusedErrorBorder: widget.focusedErrorBorder,
-            suffixIcon: widget.showDeleteIcon
-                ? IconButton(
-                    onPressed: () {
-                      if (widget.controller != null) {
-                        widget.controller!.value = TextEditingValue(
-                          text: '',
-                          selection: TextSelection.fromPosition(
-                            const TextPosition(offset: ''.length),
-                          ),
-                        );
-                      }
-
-                      if (widget.formFieldKey != null) {
-                        widget.formFieldKey!.currentState?.didChange(null);
-                      }
-
-                      if (widget.onChanged != null) {
-                        widget.onChanged!('');
-                      }
-
-                      setState(() {});
-                    },
-                    icon: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 8.0,
-                        bottom: 8.0,
-                      ),
-                      child: SizedBox(
-                        height: 16.0,
-                        width: 16.0,
-                        child: widget.deleteIcon,
+              if (widget.suffixText != null)
+                Container(
+                  height: widget.inputHeight,
+                  decoration: widget.suffixBoxDecoration,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        widget.suffixText!,
+                        style: widget.suffixTextStyle,
                       ),
                     ),
-                  )
-                : null,
-            filled: true,
-            fillColor: widget.fillColor,
-            alignLabelWithHint: false,
-            labelText: widget.labelText,
-            hintStyle: widget.hintStyle,
-            labelStyle: widget.labelStyle,
-            floatingLabelStyle: widget.floatingLabelStyle,
-            enabledBorder: widget.enabledBorder,
-            focusedBorder: widget.focusedBorder,
-            disabledBorder: widget.disabledBorder,
-            border: widget.border,
+                  ),
+                ),
+            ],
           ),
-        ),
+          SizedBox(
+            height: widget.finalHeight - widget.inputHeight,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: _errorText != null
+                  ? Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  _errorText!,
+                  style: widget.errorStyle ?? TextStyle(color: Colors.red[700], fontSize: 12),
+                ),
+              )
+                  : null,
+            ),
+          ),
+        ],
       ),
     );
   }
