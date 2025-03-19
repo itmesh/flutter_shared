@@ -167,7 +167,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
                     keyboardType: TextInputType.number,
                     minLines: widget.minLines ?? 1,
                     maxLines: widget.maxLines ?? 1,
-                    autovalidateMode: AutovalidateMode.disabled, // We'll handle validation ourselves
+                    autovalidateMode: AutovalidateMode.disabled,
                     controller: _controller,
                     enabled: widget.enabled,
                     onFieldSubmitted: (String value) => widget.onSubmit?.call(),
@@ -193,7 +193,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
                     decoration: InputDecoration(
                       hoverColor: widget.hoverColor,
                       contentPadding: widget.contentPadding,
-                      errorStyle: const TextStyle(height: 0, color: Colors.transparent), // Hide the default error
+                      errorStyle: const TextStyle(height: 0, color: Colors.transparent),
                       errorMaxLines: 1,
                       focusColor: widget.focusColor,
                       errorBorder: widget.errorBorder,
