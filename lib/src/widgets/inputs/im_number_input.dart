@@ -40,6 +40,7 @@ class ImNumberInput extends StatefulWidget {
     this.textAlignVertical,
     this.hoverColor,
     this.requiredTextError,
+    this.errorMaxLines,
   });
 
   final String? labelText;
@@ -78,8 +79,8 @@ class ImNumberInput extends StatefulWidget {
   final double finalHeight;
   final EdgeInsets contentPadding;
   final String? requiredTextError;
-
   final TextAlignVertical? textAlignVertical;
+  final int? errorMaxLines;
   @override
   State<ImNumberInput> createState() => _ImNumberInputState();
 }
@@ -164,6 +165,7 @@ class _ImNumberInputState extends State<ImNumberInput> {
           key: widget.formFieldKey,
           obscureText: widget.obscureText,
           decoration: InputDecoration(
+            errorMaxLines: widget.errorMaxLines,
             hoverColor: widget.hoverColor,
             contentPadding: widget.contentPadding,
             errorStyle: widget.errorStyle,
